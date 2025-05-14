@@ -1,0 +1,884 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>金融分析系统</title><script defer="defer" src="./main.js"></script><script defer="defer" src="./check.js"></script><script defer="defer" src="./visualization.js"></script><script defer="defer" src="./analysis.js"></script><link href="./main.css" rel="stylesheet"></head><body><div class="boxBorder"></div><div class="mainBox"><div class="mainBox-left"><ul class="mainBox-text"><li class="text text-css"></li><li class="text" id="tip">说明</li><li class="text" id="help">帮助</li></ul><ul class="mainBox-choice"><li class="choice" id="data">数据查看</li><li class="choice" id="visualization">数据可视化</li><li class="choice" id="analysis">可视分析</li></ul></div><div class="mainBox-right"><div class="mainBox-board"><div class="dropdown-csv hidden"><div class="dropbtn-csv">csv 数据文件</div><div class="dropdown-content-csv"><p class="csv-contents" id="initLinks">原始连接</p><p class="csv-contents" id="newLinks">更新连接</p><p class="csv-contents" id="basic_details_6">第六届</p><p class="csv-contents" id="basic_details_7">第七届</p><p class="csv-contents" id="basic_details_8">第八届</p><p class="csv-contents" id="basic_details_9">第九届</p><p class="csv-contents" id="basic_details_10">第十届</p><p class="csv-contents" id="basic_details_11">第十一届</p><p class="csv-contents" id="basic_details_12">第十二届</p><p class="csv-contents" id="basic_details_13">第十三届</p><p class="csv-contents" id="basic_details_14">第十四届</p><p class="csv-contents" id="basic_details_15">第十五届</p><p class="csv-contents" id="basic_details_16">第十六届</p></div></div><div class="mainBox-description hidden"></div><div class="mainBox-input hidden"><table id="output-csv"></table></div><div class="pagination-container hidden"></div><div class="v-choice hidden"><div class="input-list"><input class="v-input" id="v-dataSet" placeholder="数据集" autocomplete="off"> <input class="v-input hidden" id="v-data" placeholder="数据" autocomplete="off"></div><div class="v-start hidden">绘图选项</div><div class="v-button hidden" id="smooth">平滑</div><div class="options-style hidden" id="dataSet"></div><div class="options-style hidden" id="datas"></div></div><div class="v-board hidden"><ul class="v-list"><li class="v-li" id="bar">柱状图</li><li class="v-li" id="line">折线图</li><li class="v-li" id="scatter">散点图</li></ul></div><div class="v-pad hidden"></div></div><div class="analysis-input hidden"><div class="content-title" id="section0">#目录</div><ul class="md-content"><li class="content-h1"><a class="md-a" href="#section1">1数据获取</a></li><li class="content-h2"><a class="md-a" href="#section1.1">1.1数据来源</a></li><li class="content-h2"><a class="md-a" href="#section1.2">1.2数据获取</a></li><li class="content-h3"><a class="md-a" href="#section1.2.1">1.2.1链接爬取</a></li><li class="content-h3"><a class="md-a" href="#section1.2.2">1.2.2数据爬取</a></li><li class="content-h1"><a class="md-a" href="#section2">2数据分析</a></li><li class="content-h2"><a class="md-a" href="#section2.1">2.1数据预处理</a></li><li class="content-h2"><a class="md-a" href="#section2.2">2.2单项指标分析</a></li><li class="content-h3"><a class="md-a" href="#section2.2.1">2.2.1用户画像和分类</a></li><li class="content-h3"><a class="md-a" href="#section2.2.2">2.2.2共性特征分析</a></li><li class="content-h2"><a class="md-a" href="#section2.3">2.3综合多项指标分析</a></li><li class="content-h1"><a class="md-a" href="#section3">3预测模型</a></li></ul><h1 class="md-h one" id="section1">1数据获取 <a class="md-a" href="#section0">#</a></h1><h2 class="md-h two" id="section1.1">1.1数据来源 <a class="md-a" href="#section0">#</a></h2><ul class="md-ul"><li class="md-li">第一选择：全国期货实盘交易大赛“长期稳定盈利奖”获奖选手的交易数据，网址为： <a class="md-a" id="ex-link" href="https://spdsapp.qhrb.com.cn/spds16/match/inner/steadyprofit1.action" target="_blank">https://spdsapp.qhrb.com.cn/spds16/match/inner/steadyprofit1.action</a></li></ul><div class="md-div"><img src="./images/p1_1_1.png" class="photo"></div><p class="md-pp">图1.1.1 全国期货实盘交易大赛“长期稳定盈利奖”获奖选手</p><div class="md-div"><img src="./images/p1_1_2.png" class="photo"></div><p class="md-pp">图1.1.2 全国期货实盘交易大赛某选手某届的数据界面</p><p class="md-p">图 1.1.1 列出了获奖选手历届比赛的得分情况。在图 1.1.1 页面中，可以查看某位选手在某一届比赛中的具体数据，方法是在该选手某一届的详细数据一列点击“点击查看”，就可以进入该选手在该届比赛的具体数据了，如图 1.1.2 所示。由于前面五届数据不全，因此只需爬取第 6 至 16 届的数据进行分析即可。</p><ul class="md-ul"><li class="md-li">第二选择：全国期货实盘交易大赛“长期稳定盈利奖”获奖选手的交易数据，网址为： <a class="md-a" id="ex-link" href="https://spdspc.qhrb.com.cn/#/" target="_blank">https://spdspc.qhrb.com.cn/#/</a></li></ul><div class="md-div"><img src="./images/p1_1_3.png" class="photo"></div><p class="md-pp">图1.1.3 全国期货实盘交易大赛“长期稳定盈利奖”获奖选手</p><div class="md-div"><img src="./images/p1_1_4.png" class="photo"></div><p class="md-pp">图1.1.4 全国期货实盘交易大赛某选手某届的数据界面</p><p class="md-p">页面中全国赛排行榜点击“长期稳定盈利奖”，如图 1.1.3 所示，在页面中点击表格中某一届的分数，就可以进入该选手在该届比赛的具体数据了，如图 1.1.4 所示。由于前面五届数据不全，因此只需爬取第 6 至 18 届的数据进行分析即可。</p><p class="md-p">此处，笔者作第一选择，接下来进行数据爬取的工作。</p><h2 class="md-h two" id="section1.2">1.2数据获取 <a class="md-a" href="#section0">#</a></h2><p class="md-p">由 1.1 数据来源部分能够得知，需要点击“数据查看”后才会显示对应选手的详细数据，这使得数据爬取的思路存在两种方式：</p><ol class="md-ol"><li class="md-li">数据爬取程序首先模拟点击，然后进入选手数据页面进行数据爬取。</li><li class="md-li">数据爬取程序首先爬取选手数据页面链接，再将页面链接作为数据爬取的输入获取数据。</li></ol><p class="md-p">两种方式都能够获取数据，此处笔者选择第二种方式，首先爬取链接，然后爬取数据。</p><h3 class="md-h three" id="section1.2.1">1.2.1链接爬取 <a class="md-a" href="#section0">#</a></h3><p class="md-p">HTML 页面中要获取链接元素，简单来讲就是找到 &lt;a&gt; 标签，但需要注意的一点是，整个页面中，不仅仅存在选手数据页面的链接，还存在其它非选手数据页面的链接，所以首先来观察网页结构。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        <div class="language-label hidden">HTML</div>
+    &lt;<span class="hljs-name">div</span> class=&quot;<span class="hljs-string">table-wrapper</span>&quot;&gt;
+        &lt;<span class="hljs-name">table</span> class=&quot;<span class="hljs-string">fl-table table-hover</span>&quot;&gt;
+            &lt;<span class="hljs-name">thead</span>&gt;&lt;/<span class="hljs-name">thead</span>&gt;
+            &lt;<span class="hljs-name">tbody</span>&gt;&lt;/<span class="hljs-name">tbody</span>&gt;
+        &lt;/<span class="hljs-name">table</span>&gt;
+    &lt;/<span class="hljs-name">div</span>&gt;
+
+    &lt;<span class="hljs-name">nav</span>&gt;
+        &lt;<span class="hljs-name">ul</span> class=&quot;<span class="hljs-string">pagination</span>&quot;&gt;
+    &lt;/<span class="hljs-name">nav</span>&gt;
+                    </code></pre></div><p class="md-p">以上就是整个页面中包含选手数据页面链接的结构，其中 <strong>table-wrapper</strong> 类是数据结构，而 <strong>pagination</strong> 类是翻页结构。</p><p class="md-p">在我们已知的数据结构当中，&lt;thead&gt; 标签存储的是昵称、总得分等表头内容，而选手数据页面链接存储在 &lt;tbody&gt; 中，要获取对应链接，接下来的工作就是层层递进寻找标签直至 &lt;a&gt; 标签。找到 &lt;a&gt; 标签后，就需要将其 href 属性的内容，即对应链接爬取下来，这样就成功爬取到链接。</p><p class="md-p">明白链接爬取的逻辑之后，接下来需要解决的一个难点，就是翻页。</p><p class="md-p">上述获取结构时，我们同时获取到翻页结构，尝试简单观察浏览器 URL 栏，发现每一页面的网址都相同，所以我们接下来观察翻页结构中的详细源码。观察源码得知，翻页按钮绑定点击事件 <strong>submitPage</strong>，那我们再来看看该函数实现的逻辑。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        <div class="language-label hidden">JAVASCRIPT</div>
+    <span class="hljs-keyword">function</span> <span class="hljs-title">submitPage</span>(<span class="hljs-params">page</span>) {
+        <span class="hljs-keyword">var</span> <span class="hljs-variable">f</span> = <span>document</span>.<span class="hljs-property">adminForm</span>;
+        <span class="hljs-keyword">if </span>(<span class="hljs-variable">f</span>.<span class="hljs-property">task</span> &amp;&amp; f.<span class="hljs-property">task</span>.<span class="hljs-property">value</span> != <span class="hljs-string">&#x27;search&#x27;</span>)
+            <span class="hljs-variable">f</span>.<span class="hljs-property">task</span>.<span class="hljs-property">value</span> = <span class="hljs-string">&#x27;search&#x27;</span>;
+            <span class="hljs-variable">f</span>[<span class="hljs-string">&#x27;page.pageNo&#x27;</span>].<span class="hljs-property">value</span> = page;
+            <span class="hljs-variable">f</span>.<span class="hljs-title">submit</span>();
+    }
+                    </code></pre></div><p class="md-p">上述给出的 <strong>submitPage</strong> 函数，我们能够观察到该函数对一个表单元素的内容进行增添，此处我们猜测其为网页的查询参数，尝试在 URL 后面输入 “?page.pageNo=4”，发现网页跳转，于是我们可以利用该查询参数实现翻页。</p><p class="md-p">除了上述通过查询参数的方式实现翻页，还存在其它的方式，前文提到过模拟点击，此处依然可以对“下一页”按钮进行模拟点击实现翻页。</p><p class="md-p">解决爬取内容结构以及翻页实现的问题后，就能够将选手数据页面的链接爬取下来。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">import</span> requests
+    <span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+    <span class="hljs-keyword">import</span> csv
+    <span class="hljs-keyword">import</span> concurrent.futures
+    
+    <span class="hljs-comment"># 基础URL和页码的格式</span>
+    <span class="hljs-variable">base_url</span> = <span class="hljs-string">&#x27;https://spdsapp.qhrb.com.cn/spds16/match/inner/steadyprofit1.action?page.pageNo={}&#x27;</span>
+    
+    <span class="hljs-comment"># 存储结果的列表</span>
+    <span class="hljs-variable">results</span> = []
+    
+    <span class="hljs-comment"># 定义请求处理函数</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch_page</span>(<span class="hljs-params">page</span>):
+        <span class="hljs-variable">url</span> = base_url.<span class="hljs-built_in">format</span>(page)
+        <span class="hljs-variable">response</span> = requests.get(url)
+        response.encoding = <span class="hljs-string">&#x27;utf-8&#x27;</span>  <span class="hljs-comment"># 根据实际情况设置编码</span>
+        <span class="hljs-variable">html_content</span> = response.text
+        <span class="hljs-variable">soup</span> = BeautifulSoup(html_content, <span class="hljs-string">&#x27;html.parser&#x27;</span>)
+    
+        <span class="hljs-comment"># 找到表格的tbody部分</span>
+        <span class="hljs-variable">tbody</span> = soup.find(<span class="hljs-string">&#x27;tbody&#x27;</span>)
+        <span class="hljs-variable">page_results</span> = []
+    
+        <span class="hljs-comment"># 遍历每一行</span>
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> tbody.find_all(<span class="hljs-string">&#x27;tr&#x27;</span>):
+            <span class="hljs-variable">cells</span> = row.find_all(<span class="hljs-string">&#x27;td&#x27;</span>)
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cells) &gt; <span class="hljs-number">0</span>:
+                <span class="hljs-comment"># 提取信息</span>
+                <span class="hljs-variable">rank</span> = cells[<span class="hljs-number">0</span>].text.strip()  <span class="hljs-comment"># 排名</span>
+                <span class="hljs-variable">nickname</span> = cells[<span class="hljs-number">1</span>].text.strip()  <span class="hljs-comment"># 昵称</span>
+                <span class="hljs-variable">company</span> = cells[<span class="hljs-number">2</span>].text.strip()  <span class="hljs-comment"># 所属公司</span>
+                <span class="hljs-variable">total_score</span> = cells[<span class="hljs-number">3</span>].text.strip()  <span class="hljs-comment"># 总得分</span>
+    
+                <span class="hljs-comment"># 提取每一届的详细链接</span>
+                <span class="hljs-variable">participation_links</span> = []
+                <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>, <span class="hljs-built_in">len</span>(cells), <span class="hljs-number">3</span>):
+                    <span class="hljs-variable">participation_status</span> = cells[i].text.strip()  <span class="hljs-comment"># 是否参赛</span>
+                    <span class="hljs-keyword">if</span> participation_status == <span class="hljs-string">&quot;参赛&quot;</span>:
+                        <span class="hljs-variable">detail_link</span> = cells[i + <span class="hljs-number">1</span>].find(<span class="hljs-string">&#x27;a&#x27;</span>)[<span class="hljs-string">&#x27;href&#x27;</span>] <span class="hljs-keyword">if</span> cells[i + <span class="hljs-number">1</span>].find(<span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+                    <span class="hljs-keyword">else</span>:
+                        <span class="hljs-variable">detail_link</span> = <span class="hljs-literal">None</span>  <span class="hljs-comment"># 如果未参赛，链接赋值为None</span>
+                    
+                    participation_links.append(detail_link)
+    
+                <span class="hljs-comment"># 将提取的数据添加到结果列表</span>
+                page_results.append({
+                    <span class="hljs-string">&#x27;rank&#x27;</span>: rank,
+                    <span class="hljs-string">&#x27;nickname&#x27;</span>: nickname,
+                    <span class="hljs-string">&#x27;company&#x27;</span>: company,
+                    <span class="hljs-string">&#x27;total_score&#x27;</span>: total_score,
+                    <span class="hljs-string">&#x27;links&#x27;</span>: participation_links  <span class="hljs-comment"># 存储所有链接</span>
+                })
+        
+        <span class="hljs-keyword">return</span> page_results
+    
+    <span class="hljs-comment"># 设置要爬取的页码范围</span>
+    <span class="hljs-variable">total_pages</span> = <span class="hljs-number">290</span>  <span class="hljs-comment"># 总页数为290</span>
+    
+    <span class="hljs-comment"># 使用线程池进行并发请求</span>
+    <span class="hljs-keyword">with</span> concurrent.futures.ThreadPoolExecutor(max_workers=<span class="hljs-number">10</span>) <span class="hljs-keyword">as</span> executor:
+        <span class="hljs-variable">future_to_page</span> = {executor.submit(fetch_page, page): page <span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, total_pages + <span class="hljs-number">1</span>)}
+        <span class="hljs-keyword">for</span> future <span class="hljs-keyword">in</span> concurrent.futures.as_completed(future_to_page):
+            <span class="hljs-variable">page_results</span> = future.result()
+            results.extend(page_results)
+    
+    <span class="hljs-comment"># 按排名排序</span>
+    results.sort(key=<span class="hljs-keyword">lambda</span> x: <span class="hljs-built_in">int</span>(x[<span class="hljs-string">&#x27;rank&#x27;</span>]))
+    
+    <span class="hljs-comment"># 写入CSV文件</span>
+    <span class="hljs-variable">csv_filename</span> = <span class="hljs-string">&#x27;bigData\\src\\initLinks.csv&#x27;</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(csv_filename, mode=<span class="hljs-string">&#x27;w&#x27;</span>, newline=<span class="hljs-string">&#x27;&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8-sig&#x27;</span>) <span class="hljs-keyword">as</span> csvfile:
+        <span class="hljs-comment"># 定义CSV表头</span>
+        <span class="hljs-variable">fieldnames</span> = [<span class="hljs-string">&#x27;排名&#x27;</span>, <span class="hljs-string">&#x27;昵称&#x27;</span>, <span class="hljs-string">&#x27;所属公司&#x27;</span>, <span class="hljs-string">&#x27;总得分&#x27;</span>] + [<span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届链接&#x27;</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>, <span class="hljs-number">17</span>)]
+        <span class="hljs-variable">writer</span> = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    
+        writer.writeheader()  <span class="hljs-comment"># 写入表头</span>
+    
+        <span class="hljs-comment"># 写入每一行数据</span>
+        <span class="hljs-keyword">for</span> result <span class="hljs-keyword">in</span> results:
+            <span class="hljs-variable">row</span> = {
+                <span class="hljs-string">&#x27;排名&#x27;</span>: result[<span class="hljs-string">&#x27;rank&#x27;</span>],
+                <span class="hljs-string">&#x27;昵称&#x27;</span>: result[<span class="hljs-string">&#x27;nickname&#x27;</span>],
+                <span class="hljs-string">&#x27;所属公司&#x27;</span>: result[<span class="hljs-string">&#x27;company&#x27;</span>],
+                <span class="hljs-string">&#x27;总得分&#x27;</span>: result[<span class="hljs-string">&#x27;total_score&#x27;</span>],
+            }
+            <span class="hljs-comment"># 填充第六届到第十六届的链接</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>, <span class="hljs-number">17</span>):
+                <span class="hljs-variable">index</span> = <span class="hljs-built_in">len</span>(result[<span class="hljs-string">&#x27;links&#x27;</span>]) - (i - <span class="hljs-number">6</span>) - <span class="hljs-number">2</span>  <span class="hljs-comment"># 计算反向索引</span>
+                row[<span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届链接&#x27;</span>] = result[<span class="hljs-string">&#x27;links&#x27;</span>][index] <span class="hljs-keyword">if</span> index &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;NULL&#x27;</span>
+    
+            writer.writerow(row)
+    
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;数据已成功写入 <span class="hljs-subst">{csv_filename}</span> 文件。&quot;</span>)
+                    </code></pre></div><p class="md-p">爬取完选手数据页面链接后，就可以进行数据爬取的工作。</p><h3 class="md-h three" id="section1.2.2">1.2.2数据爬取 <a class="md-a" href="#section0">#</a></h3><p class="md-p">与链接爬取工作类似，我们依然需要对选手数据结构页面进行分析，以方便我们能够快速将数据爬取下来。</p><p class="md-p">如下图所示，选手数据包括两类，一类是基本数据，另一类是图表数据。</p><div class="md-div"><img src="./images/p1_2_2_1.png" class="photo"></div><p class="md-pp">图1.2.2.1 “长期稳定盈利奖”获奖选手基本数据</p><div class="md-div"><img src="./images/p1_2_2_2.png" class="photo"></div><p class="md-pp">图1.2.2.2 “长期稳定盈利奖”获奖选手图表数据</p><p class="md-p"><strong>基本数据</strong>依旧是图表标签存储的方式，类似于链接爬取时选手数据链接存储的数据结构，我们依旧可以查找对应的标签获取数据，这显然十分简单。在爬取基本数据时存在一个小难点，就是区分表头元素和内容元素，笔者采取的方法是手动将表头元素存储，再检查是否为表头元素，接着获取对应数据，这个方法需要人工介入，但逻辑、实现都很简单，也适用此处。</p><p class="md-p">为保证我们程序的普适性，我们需要对各届数据进行检查，看看表头元素是否都相同，这关系到我们需要写多少类不同的数据结构。</p><div class="md-div"><img src="./images/p1_2_2_3.png" class="photo"></div><p class="md-pp">图1.2.2.3 6-11届选手基本数据结构示例</p><div class="md-div"><img src="./images/p1_2_2_4.png" class="photo"></div><p class="md-pp">图1.2.2.3 12-16届选手基本数据结构示例</p><p class="md-p">最后，通过检查发现，6-11 届的表头元素相同，12-16 届的表头元素相同，所以我们需要设置两类数据结构。两类数据结构如上述示例图显示。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">import</span> aiohttp
+    <span class="hljs-keyword">import</span> asyncio
+    <span class="hljs-keyword">import</span> random
+    <span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+    
+    <span class="hljs-comment"># 随机用户代理列表</span>
+    USER_AGENTS = [
+        <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3&quot;</span>,
+        <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134&quot;</span>,
+        <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36&quot;</span>,
+        <span class="hljs-comment"># 可以添加更多用户代理</span>
+    ]
+    
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch_data</span>(<span class="hljs-params">session, nickname, link, semaphore, is_new=<span class="hljs-literal">True</span></span>):
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> semaphore:  <span class="hljs-comment"># 限制并发请求</span>
+            <span class="hljs-comment"># 检查链接是否为 nan</span>
+            <span class="hljs-keyword">if</span> pd.isna(link):
+                <span class="hljs-keyword">if</span> is_new:
+                    <span class="hljs-keyword">return</span> {<span class="hljs-string">&#x27;昵称&#x27;</span>: nickname, <span class="hljs-string">&#x27;组别&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;组账户数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;账户昵称&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;操作指导&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;参赛日期&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;指定交易商&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期初权益&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期末权益&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;累计入金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;综合排名&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净值&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;最大回撤率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率均值&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;历史最大本金&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;最大本金收益率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率最大&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率最小&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;预计年化收益率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;总交易天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;盈利天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;亏损天数&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;交易胜率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;盈亏比&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;风险度均值&#x27;</span>: <span class="hljs-literal">None</span>}
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-keyword">return</span> {<span class="hljs-string">&#x27;昵称&#x27;</span>: nickname, <span class="hljs-string">&#x27;组别&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;组账户数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;账户昵称&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;操作指导&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;参赛日期&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;指定交易商&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期初权益&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期末权益&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;累计入金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净值&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净值排名&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;累计净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净利润排名&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率均值&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;日收益率最大&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率最小&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;年化收益率&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;盈利天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;亏损天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;交易胜率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;盈亏比&#x27;</span>: <span class="hljs-literal">None</span>,
+                            <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;风险度均值&#x27;</span>: <span class="hljs-literal">None</span>}
+    
+            <span class="hljs-comment"># 发起请求</span>
+            <span class="hljs-variable">retries</span> = <span class="hljs-number">3</span>
+            <span class="hljs-keyword">for</span> attempt <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(retries):
+                <span class="hljs-keyword">try</span>:
+                    <span class="hljs-variable">headers</span> = {<span class="hljs-string">&#x27;User-Agent&#x27;</span>: random.choice(USER_AGENTS)}
+                    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> session.get(link, headers=headers) <span class="hljs-keyword">as</span> response:
+                        response.raise_for_status()  <span class="hljs-comment"># 如果响应状态码不是 200，将引发异常</span>
+                        response.encoding = <span class="hljs-string">&#x27;utf-8&#x27;</span>  <span class="hljs-comment"># 根据需要设置编码</span>
+                        <span class="hljs-variable">html</span> = <span class="hljs-keyword">await</span> response.text()
+    
+                        <span class="hljs-comment"># 解析网页内容</span>
+                        <span class="hljs-variable">soup</span> = BeautifulSoup(html, <span class="hljs-string">&#x27;html.parser&#x27;</span>)
+    
+                        <span class="hljs-comment"># 存储结果</span>
+                        <span class="hljs-variable">data</span> = {<span class="hljs-string">&#x27;昵称&#x27;</span>: nickname}
+    
+                        <span class="hljs-comment"># 根据 is_new 参数选择表头</span>
+                        <span class="hljs-keyword">if</span> is_new:
+                            <span class="hljs-variable">headers</span> = [<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;组账户数&#x27;</span>, <span class="hljs-string">&#x27;账户昵称&#x27;</span>, <span class="hljs-string">&#x27;操作指导&#x27;</span>, <span class="hljs-string">&#x27;参赛日期&#x27;</span>, <span class="hljs-string">&#x27;指定交易商&#x27;</span>,
+                                        <span class="hljs-string">&#x27;期初权益&#x27;</span>, <span class="hljs-string">&#x27;期末权益&#x27;</span>, <span class="hljs-string">&#x27;累计入金&#x27;</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>, <span class="hljs-string">&#x27;综合排名&#x27;</span>,
+                                        <span class="hljs-string">&#x27;累计净值&#x27;</span>, <span class="hljs-string">&#x27;最大回撤率&#x27;</span>, <span class="hljs-string">&#x27;累计净利润&#x27;</span>, <span class="hljs-string">&#x27;日收益率均值&#x27;</span>,
+                                        <span class="hljs-string">&#x27;历史最大本金&#x27;</span>, <span class="hljs-string">&#x27;最大本金收益率&#x27;</span>, <span class="hljs-string">&#x27;日收益率最大&#x27;</span>, <span class="hljs-string">&#x27;日收益率最小&#x27;</span>,
+                                        <span class="hljs-string">&#x27;预计年化收益率&#x27;</span>, <span class="hljs-string">&#x27;总交易天数&#x27;</span>, <span class="hljs-string">&#x27;盈利天数&#x27;</span>, <span class="hljs-string">&#x27;亏损天数&#x27;</span>,
+                                        <span class="hljs-string">&#x27;交易胜率&#x27;</span>, <span class="hljs-string">&#x27;盈亏比&#x27;</span>, <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>, <span class="hljs-string">&#x27;风险度均值&#x27;</span>]
+                        <span class="hljs-keyword">else</span>:
+                            <span class="hljs-variable">headers</span> = [<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;组账户数&#x27;</span>, <span class="hljs-string">&#x27;账户昵称&#x27;</span>, <span class="hljs-string">&#x27;操作指导&#x27;</span>, <span class="hljs-string">&#x27;参赛日期&#x27;</span>, <span class="hljs-string">&#x27;指定交易商&#x27;</span>,
+                                        <span class="hljs-string">&#x27;期初权益&#x27;</span>, <span class="hljs-string">&#x27;期末权益&#x27;</span>, <span class="hljs-string">&#x27;累计入金&#x27;</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>, <span class="hljs-string">&#x27;累计净值&#x27;</span>,
+                                        <span class="hljs-string">&#x27;累计净值排名&#x27;</span>, <span class="hljs-string">&#x27;累计净利润&#x27;</span>, <span class="hljs-string">&#x27;累计净利润排名&#x27;</span>, <span class="hljs-string">&#x27;日收益率均值&#x27;</span>,
+                                        <span class="hljs-string">&#x27;日收益率最大&#x27;</span>, <span class="hljs-string">&#x27;日收益率最小&#x27;</span>, <span class="hljs-string">&#x27;年化收益率&#x27;</span>, <span class="hljs-string">&#x27;盈利天数&#x27;</span>,
+                                        <span class="hljs-string">&#x27;亏损天数&#x27;</span>, <span class="hljs-string">&#x27;交易胜率&#x27;</span>, <span class="hljs-string">&#x27;盈亏比&#x27;</span>, <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>, <span class="hljs-string">&#x27;风险度均值&#x27;</span>]
+    
+                        <span class="hljs-comment"># 遍历每一行</span>
+                        <span class="hljs-variable">row</span> = soup.find_all(<span class="hljs-string">&#x27;tr&#x27;</span>)
+                        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> rows:
+                            <span class="hljs-keyword">return</span> {**data, **{key: <span class="hljs-literal">None</span> <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> headers}}
+
+                        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
+                            <span class="hljs-variable">cells</span> = row.find_all(<span class="hljs-string">&#x27;td&#x27;</span>)
+                            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cells) &gt;= <span class="hljs-number">2</span>:
+                                <span class="hljs-keyword">for</span> i, cell <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(cells):
+                                    <span class="hljs-keyword">if</span> cell.get_text(strip=<span class="hljs-literal">True</span>) <span class="hljs-keyword">in</span> headers:
+                                        <span class="hljs-keyword">if</span> i + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(cells):
+                                            <span class="hljs-variable">value_cell</span> = cells[i + <span class="hljs-number">1</span>]
+                                            <span class="hljs-variable">value</span> = value_cell.get_text(strip=<span class="hljs-literal">True</span>)
+                                            <span class="hljs-variable">key</span> = cell.get_text(strip=<span class="hljs-literal">True</span>)
+                                            data[key] = value
+    
+                        <span class="hljs-keyword">return</span> data
+    
+                <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+                    <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">1</span>)  <span class="hljs-comment"># 等待1秒后重试</span>
+    
+            <span class="hljs-comment"># 请求失败时返回默认值</span>
+            <span class="hljs-keyword">if</span> is_new:
+                <span class="hljs-keyword">return</span> {<span class="hljs-string">&#x27;昵称&#x27;</span>: nickname, <span class="hljs-string">&#x27;组别&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;组账户数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;账户昵称&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;操作指导&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;参赛日期&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;指定交易商&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期初权益&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期末权益&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;累计入金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;综合排名&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净值&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;最大回撤率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率均值&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;历史最大本金&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;最大本金收益率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率最大&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率最小&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;预计年化收益率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;总交易天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;盈利天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;亏损天数&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;交易胜率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;盈亏比&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;风险度均值&#x27;</span>: <span class="hljs-literal">None</span>}
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> {<span class="hljs-string">&#x27;昵称&#x27;</span>: nickname, <span class="hljs-string">&#x27;组别&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;组账户数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;账户昵称&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;操作指导&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;参赛日期&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;指定交易商&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期初权益&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;期末权益&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;累计入金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净值&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净值排名&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;累计净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;累计净利润排名&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率均值&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;日收益率最大&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;日收益率最小&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;年化收益率&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;盈利天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;亏损天数&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;交易胜率&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;盈亏比&#x27;</span>: <span class="hljs-literal">None</span>,
+                        <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;风险度均值&#x27;</span>: <span class="hljs-literal">None</span>}
+    
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+        <span class="hljs-comment"># 读取 CSV 文件</span>
+        <span class="hljs-variable">df</span> = pd.read_csv(<span class="hljs-string">&#x27;bigData\\src\\newLinks.csv&#x27;</span>)
+        <span class="hljs-variable">columns_lists</span> = {column: df[column].tolist() <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> df.columns}
+    
+        <span class="hljs-variable">semaphore</span> = asyncio.Semaphore(<span class="hljs-number">10</span>)  <span class="hljs-comment"># 限制并发请求的数量</span>
+    
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> aiohttp.ClientSession() <span class="hljs-keyword">as</span> session:
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">14</span>, <span class="hljs-number">17</span>):
+                <span class="hljs-variable">tasks</span> = []
+                <span class="hljs-variable">results</span> = []
+    
+                <span class="hljs-comment"># 根据当前的 i 值选择 fetch_data 的调用方式</span>
+                <span class="hljs-variable">is_new</span> = i &gt;= <span class="hljs-number">12</span>  <span class="hljs-comment"># 如果 i 在 12 到 16 之间，使用新数据结构</span>
+    
+                <span class="hljs-keyword">for</span> nickname, link <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(columns_lists[<span class="hljs-string">&#x27;昵称&#x27;</span>], columns_lists.get(<span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届链接&#x27;</span>, [])):
+                    <span class="hljs-variable">task</span> = fetch_data(session, nickname, link, semaphore, is_new=is_new)
+                    tasks.append(task)
+    
+                <span class="hljs-comment"># 按顺序获取结果</span>
+                <span class="hljs-variable">results</span> = <span class="hljs-keyword">await</span> asyncio.gather(*tasks)
+    
+                <span class="hljs-comment"># 创建 DataFrame 并保存为 CSV 文件</span>
+                <span class="hljs-variable">result_df</span> = pd.DataFrame(results)
+                result_df.to_csv(<span class="hljs-string">f&#x27;bigData\\src\\basic_details_<span class="hljs-subst">{i}</span>.csv&#x27;</span>, index=<span class="hljs-literal">False</span>, encoding=<span class="hljs-string">&#x27;utf-8-sig&#x27;</span>)
+    
+                <span class="hljs-comment"># 每次爬取完一个文件后随机延迟</span>
+                <span class="hljs-keyword">await</span> asyncio.sleep(random.uniform(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>))
+    
+    <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+        asyncio.run(main())
+                    </code></pre></div><p class="md-p">对爬虫程序进行添加爬取数量限制后，我们进行程序的测试，但当程序运行结束时，检查各个 csv 文件能够发现仅有最近几届的基本数据被保存至对应的 csv 文件，早期几届的基本数据并没有被正确爬取、保存。</p><p class="md-p">最近几届选手的基本数据能够爬取下来，说明程序对网站的请求以及对数据的存储都是没问题的，那很可能出问题的地方在于早期几届的网址无法正常访问。</p><p class="md-p">于是我们对 csv 文件中早期几届的链接进行访问检查是否正常，结果确实无法正常访问，链接都是从网站中爬取下来，我们再试着从网站中点击链接，发现也无法正常访问。</p><p class="md-p">网站也无法正常访问选手数据链接，那我们再试着从第二选择的网站中尝试访问，发现可以正常访问选手数据页面，比对之后发现，第一选择网站提供的选手数据链接缺少端口号，那么我们就需要对已爬取的链接添加端口号，另外，在浏览选手数据页面时能够发现，基本数据是作为另一网址嵌套在选手数据页面中的，于是我们还可以更改网址链接，以方便爬取选手基本数据。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+    <span class="hljs-comment"># 加载 CSV 文件</span>
+    <span class="hljs-variable">df</span> = pd.read_csv(<span class="hljs-string">&#x27;bigData\\src\\initLinks.csv&#x27;</span>)
+    
+    <span class="hljs-comment"># 将列转换为列表</span>
+    <span class="hljs-variable">columns_lists</span> = {column: df[column].tolist() <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> df.columns}
+    
+    <span class="hljs-comment"># 遍历第 6 届到第 13 届的链接</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>, <span class="hljs-number">14</span>):  <span class="hljs-comment"># 从第 6 届到第 13 届</span>
+        <span class="hljs-variable">column_name</span> = <span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届链接&#x27;</span>
+        <span class="hljs-keyword">if</span> column_name <span class="hljs-keyword">in</span> columns_lists:  <span class="hljs-comment"># 检查列是否存在</span>
+            <span class="hljs-keyword">for</span> j, link <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(columns_lists[column_name]):
+                <span class="hljs-comment"># 检查链接是否为空</span>
+                <span class="hljs-keyword">if</span> pd.isna(link) <span class="hljs-keyword">or</span> link == <span class="hljs-string">&#x27;&#x27;</span>:  <span class="hljs-comment"># 检查是否为 NaN 或空字符串</span>
+                    <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># 如果为空，则跳过当前链接</span>
+                
+                <span class="hljs-comment"># 确保链接是字符串类型</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(link, <span class="hljs-built_in">float</span>):
+                    <span class="hljs-variable">link</span> = <span class="hljs-built_in">str</span>(link)  <span class="hljs-comment"># 将浮点数转换为字符串</span>
+                
+                <span class="hljs-comment"># 修改链接</span>
+                <span class="hljs-variable">modified_link</span> = link.replace(<span class="hljs-string">&#x27;.cn&#x27;</span>, <span class="hljs-string">&#x27;.cn:8888&#x27;</span>).replace(<span class="hljs-string">&#x27;Index&#x27;</span>, <span class="hljs-string">&#x27;BasicData&#x27;</span>)
+                columns_lists[column_name][j] = modified_link  <span class="hljs-comment"># 更新列表中的链接</span>
+    
+    <span class="hljs-comment"># 将修改后的列表转换回 DataFrame</span>
+    <span class="hljs-variable">modified_df</span> = pd.DataFrame(columns_lists)
+    
+    <span class="hljs-comment"># 保存修改后的 DataFrame 到 newLinks.csv</span>
+    modified_df.to_csv(<span class="hljs-string">&#x27;bigData\\src\\newLinks.csv&#x27;</span>, index=<span class="hljs-literal">False</span>, encoding=<span class="hljs-string">&#x27;utf-8-sig&#x27;</span>)
+                    </code></pre></div><p class="md-p">在修改完链接后，我们依旧对数据爬取程序进行测试，在确定数据爬取程序运行正常后，我们去除限制，将 6-16 届所有选手的基本数据爬取下来。</p><p class="md-p">爬取完选手基本数据后，我们接下来对图表数据进行爬取。</p><p class="md-p"><strong>图表数据</strong>并不像基本数据一样利用表格标签进行存储，而是利用变量存储在 JAVASCRIPT 中，并且经过观察，仅有最近几届的图表数据显式存储，早期的图表数据难以找寻，所以笔者此处选择爬取 14-16 届选手的图表数据。</p><p class="md-p">我们已知图表数据存储在 JAVASCRIPT 的变量中，所以我们需要做的工作就是找到存储图表数据的变量，然后将其值加载进爬取程序的变量中，最后写入 csv 文件中。</p><p class="md-p">在基本数据爬取时，我们利用多线程的方式优化爬取速度，但在图表数据爬取时，由于图表数据以选手分组，并按时间顺序排序，所以笔者此处并没有使用多线程爬取图表数据，防止图表数据顺序错乱。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">import</span> requests
+    <span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+    <span class="hljs-keyword">import</span> json
+    <span class="hljs-keyword">import</span> re
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">extract_basicdata1Curves</span>(<span class="hljs-params">url</span>):
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">if</span> pd.isna(url):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    
+            <span class="hljs-comment"># 发送请求获取网页内容</span>
+            <span class="hljs-variable">response</span> = requests.get(url)
+            response.raise_for_status()  <span class="hljs-comment"># 检查请求是否成功</span>
+            response.encoding = <span class="hljs-string">&#x27;utf-8&#x27;</span>
+    
+            <span class="hljs-comment"># 解析网页内容</span>
+            <span class="hljs-variable">soup</span> = BeautifulSoup(response.text, <span class="hljs-string">&#x27;html.parser&#x27;</span>)
+    
+            <span class="hljs-comment"># 查找所有 script 标签</span>
+            <span class="hljs-variable">scripts</span> = soup.find_all(<span class="hljs-string">&#x27;script&#x27;</span>)
+    
+            <span class="hljs-comment"># 提取 basicdata1Curves</span>
+            <span class="hljs-keyword">for</span> script <span class="hljs-keyword">in</span> scripts:
+                <span class="hljs-keyword">if</span> script.string:  <span class="hljs-comment"># 确保 script 标签中有内容</span>
+                    <span class="hljs-comment"># 使用正则表达式查找 basicdata1Curves 定义</span>
+                    <span class="hljs-variable">match</span> = re.search(<span class="hljs-string">r&#x27;var\s+basicdata1Curves\s*=\s*\&#x27;(\[[\s\S]*?)\&#x27;;&#x27;</span>, script.string)
+                    <span class="hljs-keyword">if</span> match:
+                        <span class="hljs-comment"># 提取 JSON 字符串</span>
+                        <span class="hljs-variable">json_str</span> = match.group(<span class="hljs-number">1</span>)
+                        <span class="hljs-comment"># 尝试解析 JSON 数据</span>
+                        <span class="hljs-keyword">try</span>:
+                            <span class="hljs-variable">data</span> = json.loads(json_str)
+                            <span class="hljs-keyword">return</span> data  <span class="hljs-comment"># 返回提取的数据</span>
+                        <span class="hljs-keyword">except</span> json.JSONDecodeError:
+                            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+        <span class="hljs-comment"># 读取 CSV 文件</span>
+        <span class="hljs-variable">df</span> = pd.read_csv(<span class="hljs-string">&#x27;bigData\\src\\newLinks.csv&#x27;</span>)
+    
+        <span class="hljs-comment"># 遍历每一列链接</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">14</span>, <span class="hljs-number">17</span>):
+            <span class="hljs-variable">results</span> = pd.DataFrame()  <span class="hljs-comment"># 每个链接列创建一个新的 DataFrame</span>
+            <span class="hljs-variable">urls</span> = df.get(<span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届链接&#x27;</span>, pd.DataFrame())  <span class="hljs-comment"># 使用 df.get 获取链接列</span>
+    
+            <span class="hljs-keyword">for</span> index, url <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(urls):
+                <span class="hljs-variable">data</span> = extract_basicdata1Curves(url)  <span class="hljs-comment"># 获取当前列的 URL</span>
+                <span class="hljs-keyword">if</span> data <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                    <span class="hljs-variable">data</span> = pd.DataFrame(data)
+                    data.rename(columns={
+                        <span class="hljs-string">&#x27;cumulativenet&#x27;</span>: <span class="hljs-string">&#x27;净值&#x27;</span>,
+                        <span class="hljs-string">&#x27;grossprofit&#x27;</span>: <span class="hljs-string">&#x27;毛利润&#x27;</span>,
+                        <span class="hljs-string">&#x27;handingfee&#x27;</span>: <span class="hljs-string">&#x27;手续费&#x27;</span>,
+                        <span class="hljs-string">&#x27;netprofit&#x27;</span>: <span class="hljs-string">&#x27;净利润&#x27;</span>,
+                        <span class="hljs-string">&#x27;playerid&#x27;</span>: <span class="hljs-string">&#x27;用户ID&#x27;</span>,
+                        <span class="hljs-string">&#x27;profitrate&#x27;</span>: <span class="hljs-string">&#x27;利润率&#x27;</span>,
+                        <span class="hljs-string">&#x27;spprofitrate&#x27;</span>: <span class="hljs-string">&#x27;最大本金收益率&#x27;</span>,
+                        <span class="hljs-string">&quot;tradedate&quot;</span>: <span class="hljs-string">&#x27;交易日期&#x27;</span>
+                    }, inplace=<span class="hljs-literal">True</span>)
+                    data.insert(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;昵称&#x27;</span>, df[<span class="hljs-string">&#x27;昵称&#x27;</span>][index])
+                    <span class="hljs-variable">results</span> = pd.concat([results, data], ignore_index=<span class="hljs-literal">True</span>)
+                    <span class="hljs-variable">results</span> = pd.concat([results, pd.DataFrame([{}])], ignore_index=<span class="hljs-literal">True</span>)
+    
+            <span class="hljs-comment"># 保存每一届的结果到 CSV 文件</span>
+            <span class="hljs-variable">output_file</span> = <span class="hljs-string">f&#x27;bigData\\src\\graph_datails_<span class="hljs-subst">{i}</span>.csv&#x27;</span>
+            results.to_csv(output_file, index=<span class="hljs-literal">False</span>, encoding=<span class="hljs-string">&#x27;utf-8-sig&#x27;</span>)
+    
+    <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+        main()
+                    </code></pre></div><h1 class="md-h one" id="section2">2数据分析 <a class="md-a" href="#section0">#</a></h1><p class="md-p">在完成数据爬取工作后，接下来进入到数据分析工作。</p><p class="md-p">数据分析工作主要是对各项数据进行特征分析，对比分析不同排名区间选手的差异，挖掘排名前列的长期稳定盈利选手的共性。</p><p class="md-p">但在数据分析工作开始之前，我们首先需要对数据进行预处理，因为排名靠后的选手参赛的次数过少，直接分析得出的结论更可能具有偶然性，所以我们可以对其进行限制，以提高分析的可信程度。</p><h2 class="md-h two" id="section2.1">2.1数据预处理 <a class="md-a" href="#section0">#</a><p class="md-p">数据预处理的工作包括数据清洗、数据转换、特征选择等等，在此处，笔者预处理主要做的工作是数据清洗，原因在于数据存在大量空值，特征选择工作笔者将其与后续分析统一，这样更具有逻辑性。同时，笔者选择不对数据进行标准化、归一化，直接使用原始数据。</p><p class="md-p">首先，让我们对空值进行处理。虽然爬取数据时，我们设置两类数据结构，但两类数据结构中的大多数字段都是相同的，于是我们抽取出相同且想要分析的字段进行空值检查，保留非空值。由于后续我们将进行统计分析，所以均值、最大值、最小值等相关类型的数据我们并不需要，此处舍去。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+    <span class="hljs-variable">init_dataframes</span> = [] <span class="hljs-comment"># 初始数据集</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>, <span class="hljs-number">17</span>):
+        <span class="hljs-variable">df</span> = pd.read_csv(<span class="hljs-string">f&#x27;bigData\\src\\basic_details_<span class="hljs-subst">{i}</span>.csv&#x27;</span>)
+        init_dataframes.append(df)
+    
+    <span class="hljs-comment"># 定义需要检查的列</span>
+    <span class="hljs-variable">columns_to_check</span> = [
+        <span class="hljs-string">&#x27;组别&#x27;</span>, 
+        <span class="hljs-string">&#x27;组账户数&#x27;</span>,
+        <span class="hljs-string">&#x27;期初权益&#x27;</span>,
+        <span class="hljs-string">&#x27;期末权益&#x27;</span>,
+        <span class="hljs-string">&#x27;累计入金&#x27;</span>,
+        <span class="hljs-string">&#x27;累计出金&#x27;</span>,
+        <span class="hljs-string">&#x27;累计净值&#x27;</span>,
+        <span class="hljs-string">&#x27;累计净利润&#x27;</span>,
+        <span class="hljs-string">&#x27;盈利天数&#x27;</span>,
+        <span class="hljs-string">&#x27;亏损天数&#x27;</span>,
+        <span class="hljs-string">&#x27;交易胜率&#x27;</span>,
+        <span class="hljs-string">&#x27;盈亏比&#x27;</span>,
+        <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>
+    ]
+    
+    <span class="hljs-variable">non_empty_dataframes</span> = [] <span class="hljs-comment"># 非空数据集</span>
+    <span class="hljs-keyword">for</span> i, df <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(init_dataframes, start=<span class="hljs-number">6</span>):
+        <span class="hljs-variable">df</span> = df.dropna(subset=columns_to_check)
+        <span class="hljs-variable">df</span> = df[[<span class="hljs-string">&#x27;昵称&#x27;</span>] + columns_to_check]
+        non_empty_dataframes.append(df)
+                        </code></pre></div><p class="md-p">处理完空值后，我们接着对非空数据进行分组处理，这是因为组别不同，综合评分的计算也不同，并且还能够分析不同组别间可能存在的一些共性或差异。</p><p class="md-p">注意，笔者分组采用的是 sort_values 函数，而非 groupby 函数，这是因为 groupby 函数返回值为 DataFrameGroupBy 对象。这个对象并不是一个具体的 DataFrame，而是一个用于后续操作的中间对象，它包含了分组的信息。我们需要的效果是将同组别的选手信息聚合在一起，sort_value 函数可以实现该效果，并且不会生成其它复杂的对象。</p><p class="md-p">虽然实现分组，但是还存在一个问题就是，顺序不再是爬取时的排名顺序，而是乱序，这需要我们在分组时保持稳定，即不改变排名顺序。实现的逻辑十分简单，索引在某种程度上对应着排名，所以只需要让索引值小的选手排在前面即可。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+
+    <span class="hljs-variable">grouped_dataframes</span> = []  <span class="hljs-comment"># 分组数据集</span>
+    
+    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+        <span class="hljs-comment"># 将索引重置为列</span>
+        <span class="hljs-variable">df_reset</span> = df.reset_index()
+        <span class="hljs-comment"># 按 &#x27;组别&#x27; 和 &#x27;index&#x27; 列排序</span>
+        <span class="hljs-variable">grouped_df</span> = df_reset.sort_values(by=[<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;index&#x27;</span>], ascending=[<span class="hljs-literal">True</span>, <span class="hljs-literal">True</span>])
+        <span class="hljs-comment"># 将索引恢复</span>
+        grouped_df.set_index(<span class="hljs-string">&#x27;index&#x27;</span>, inplace=<span class="hljs-literal">True</span>)
+        grouped_dataframes.append(grouped_df)
+                        </code></pre></div><p class="md-p">在实现分组后，我们就得到了原始非空数据集、分组数据集两类数据集。由于各届数据集的数据量不尽相同，笔者选择并不简单地分析前 10 名、后 100 名的选手，也不对参加次数进行限制，而是选择一个比例区间，如前 20%、后 20% 等进行分析，尽可能“模糊”数据集，分析得出长期稳定盈利选手的共性，而非某几个选手的特征。</p><p class="md-p">其实，此处还有一个问题就是选手各届昵称匹配的问题，这是因为同一个选手在不同届可能使用的不一样的账户昵称。但是，这个问题在数据爬取时得到解决，我们在数据爬取时，先爬取链接，后爬取选手基本数据，在爬取基本数据时将链接对应的昵称添加为一个新字段，与选手基本数据同时写入 csv 文件，所以实现了“用户对齐”。</p><h2 class="md-h two" id="section2.2">2.2单项指标分析 <a class="md-a" href="#section0">#</a></h2><p class="md-p">每一个选手在每一届都有很多单项指标，例如基本数据中的“组别、期初权益、期末权益、累计净值、累计净利润、日收益均值、最大本金收益率、盈亏比、交易胜率、风险度均值”等等，也有“最大本金收益率、毛利润、净利润、手续费”等指标的时间变化数据，还有“多空盈亏统计、日内隔夜统计、品种成交统计（累计品种平仓盈亏）”等统计数据。</p><h3 class="md-h three" id="section2.2.1">2.2.1用户画像和分类 <a class="md-a" href="#section0">#</a></h3><p class="md-p">首先我们对选手的基本数据进行处理，我们选择选手历年的单个特征分别进行统计分析，以了解每个指标的分布情况，获得用户画像和分类。</p><p class="md-p">由于我们对数据集的处理，以及并没有对参赛次数进行限制，所以方差、标准差的计算会出现问题，某些选手仅参加一届比赛时，方差、标准差公式无意义，会得出空值，所以我们选择不对方差、标准差进行统计。</p><div class="table-goto"></div><div class="table-container" id="table-container"><table class="analysis-table"></table></div><p class="md-p">表格很直观地展现出各个选手的基本数据的统计情况，但是并不高效，数据量过大导致展示效果大打折扣，于是我们试着对其进行可视化。为直接、高效表示出一组数据的最大值、最小值、中位数、及上下四分位数，我们选择用箱线图对各个选手的基本数据进行可视化，点击表格中用户的名称，就能展现出对应选手的基本数据的箱线图。</p><p class="md-p">如果你想查看某位特定选手的箱线图，可以利用下面的搜索框，输入对应选手的昵称，点击搜索，即可获得对应选手的表格数据，再点击其昵称，就能得出箱线图。</p><div class="table-search"></div><div class="table-container" id="analysis-container"><table class="analysis-search"></table></div><div id="boxplot"></div><p class="md-p">注意，箱线图中有很多“线”，造成这样的原因有两种可能，一种是该位选手只参加了一届比赛或者每届比赛该数据都相同，没有范围，仅有单值；另一种可能就是数据数量级大小相差过大导致数量级小的数据范围显得“微弱”，所以呈一条直线，但可以通过鼠标对图像进行放大缩小解决该问题。</p><h3 class="md-h three" id="section2.2.2">2.2.2共性特征分析 <a class="md-a" href="#section0">#</a></h3><p class="md-p">以上我们通过表格与箱线图两种方式展现各位选手的基本数据统计情况，接着我们开始分析对选手长期稳定盈利能力影响的指标，首先由组别指标开始。我们对第 6-16 届前 20% 的选手的组别进行统计，看看各组别在前列的占比，以观察组别是否有比较显著的影响。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+    <span class="hljs-keyword">from</span> groupby <span class="hljs-keyword">import</span> grouped_dataframes
+    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+    <span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+    
+    <span class="hljs-variable">results</span> = {}
+    
+    <span class="hljs-variable">i</span> = <span class="hljs-number">6</span>
+    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+        <span class="hljs-comment"># 计算前 20% 的选手数量</span>
+        <span class="hljs-variable">top_20_percent_count</span> = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">len</span>(df) * <span class="hljs-number">0.2</span>)
+        
+        <span class="hljs-comment"># 获取前 20% 选手的昵称</span>
+        <span class="hljs-variable">top_20_nicknames</span> = df[<span class="hljs-string">&#x27;昵称&#x27;</span>].head(top_20_percent_count)
+        
+        <span class="hljs-comment"># 获取第 i 届的分组数据</span>
+        <span class="hljs-variable">grouped_df</span> = grouped_dataframes[i-<span class="hljs-number">6</span>]
+        
+        <span class="hljs-comment"># 统计这些昵称对应的组别总数</span>
+        <span class="hljs-variable">group_counts</span> = grouped_df[grouped_df[<span class="hljs-string">&#x27;昵称&#x27;</span>].isin(top_20_nicknames)][<span class="hljs-string">&#x27;组别&#x27;</span>].value_counts()
+        
+        <span class="hljs-comment"># 将结果存储到字典中</span>
+        results[<span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届&#x27;</span>] = group_counts
+    
+        <span class="hljs-variable">i</span> += <span class="hljs-number">1</span>
+    
+    sns.<span class="hljs-built_in">set</span>(style=<span class="hljs-string">&quot;whitegrid&quot;</span>)
+    
+    <span class="hljs-keyword">for</span> key, group_counts <span class="hljs-keyword">in</span> results.items():
+        <span class="hljs-comment"># 绘制饼图</span>
+        plt.figure(figsize=(<span class="hljs-number">8</span>, <span class="hljs-number">6</span>))
+        plt.rcParams[<span class="hljs-string">&quot;font.sans-serif&quot;</span>]=[<span class="hljs-string">&quot;SimHei&quot;</span>] <span class="hljs-comment">#设置字体</span>
+        plt.rcParams[<span class="hljs-string">&quot;axes.unicode_minus&quot;</span>]=<span class="hljs-literal">False</span> <span class="hljs-comment">#该语句解决图像中的“-”负号的乱码问题</span>
+        plt.pie(group_counts, labels=group_counts.index, autopct=<span class="hljs-string">&#x27;%1.1f%%&#x27;</span>, startangle=<span class="hljs-number">140</span>, colors=sns.color_palette(<span class="hljs-string">&quot;pastel&quot;</span>))
+        plt.title(<span class="hljs-string">f&#x27;<span class="hljs-subst">{key}</span> 组别占比&#x27;</span>)
+        plt.axis(<span class="hljs-string">&#x27;equal&#x27;</span>)  <span class="hljs-comment"># 使饼图为圆形</span>
+        plt.savefig(<span class="hljs-string">f&#x27;bigData/src/<span class="hljs-subst">{key}</span>_group_pie.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)  <span class="hljs-comment"># 保存图表</span>
+        plt.close()  <span class="hljs-comment"># 关闭当前图表以释放内存</span>
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_2_2_1.png" class="photo"></div><p class="md-pp">图2.2.2.1 各届组别占比统计图</p><p class="md-p">根据统计图我们能够看出，各届前 20% 选手中轻量级组别的选手一直占据半数以上，这可能代表着轻量级组别更容易保持长期稳定盈利，因为轻量级组别的交易风格稳健，风险相对较低，选手盈利、亏损波动较为可控。早期几届选手只有轻量级、重量级两种组别，但是后期组别类别逐渐丰富，各组别都能在长期稳定盈利中脱颖而出，这也能说明组别或许是个体性差异的体现，不绝对代表着组别就能够显著影响长期稳定盈利能力。但足够稳定、可控且盈利还算可观的轻量级组别，相较于其它组别还是更为有优势。</p><p class="md-p">在分析完组别对选手长期稳定盈利能力的影响后，接下来我们选择原始非空数据集利用前 20 % 与后 40%，的选手的基本情况进行相关性分析以找出与盈利能力高度相关的指标。</p><p class="md-p">相关性分析我们选择 t-检验方法，它可以帮助我们识别不同指标之间的显著性差异。我们将每届前 20% 和后 40% 的选手数据作为样本进行独立性 t-检验，保存其 t 统计量与 p 值，最终通过 p 值的大小判断哪些指标对选手长期盈利能力影响更为显著。</p><p class="md-p">在分析之前，我们给出理论上能够影响选手盈利能力的指标：</p><p class="md-p"><strong style="color: whitesmoke;">累计净值</strong>：这个指标反映了基金的总增长情况。较高的累计净值通常意味着更好的长期表现。<br><strong style="color: whitesmoke;">累计净利润</strong>：直接关系到基金的盈利能力。高累计净利润表示基金为投资者带来了更多的收益。<br><strong style="color: whitesmoke;">交易胜率</strong>：虽然不是直接的财务指标，但交易胜率高可能间接提高整体盈利能力，因为它表明基金经理在做决策时更为准确。<br><strong style="color: whitesmoke;">期末权益</strong>：类似于期初权益，它显示了基金在某一时点的总价值。如果期末权益高于期初权益，并且没有大量的外部资金流入，那么这可能意味着基金在该期间内实现了正回报。<br><strong style="color: whitesmoke;">组账户数、期初权益和累计入金</strong>：这些指标可能与规模经济有关。较大的资产管理规模有时能降低单位成本，从而提高盈利能力。<br><strong style="color: whitesmoke;">亏损天数和亏损比率</strong>：这两个指标的数值较低通常是有利的，因为它们表明基金较少经历亏损时期。<br><strong style="color: whitesmoke;">手续费/净利润</strong>：较低的比值是积极的，因为这表示相对于赚取的利润而言，支付的手续费较少。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                                <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">from</span> scipy <span class="hljs-keyword">import</span> stats
+    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+    <span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+    
+    <span class="hljs-variable">best_indicators</span> = {}
+    
+    <span class="hljs-variable">i</span> = <span class="hljs-number">6</span>
+    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+        <span class="hljs-comment"># 选择需要分析的指标</span>
+        <span class="hljs-variable">indicators</span> = [
+            <span class="hljs-string">&#x27;组账户数&#x27;</span>,
+            <span class="hljs-string">&#x27;期初权益&#x27;</span>,
+            <span class="hljs-string">&#x27;期末权益&#x27;</span>,
+            <span class="hljs-string">&#x27;累计入金&#x27;</span>,
+            <span class="hljs-string">&#x27;累计出金&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净值&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净利润&#x27;</span>,
+            <span class="hljs-string">&#x27;盈利天数&#x27;</span>,
+            <span class="hljs-string">&#x27;亏损天数&#x27;</span>,
+            <span class="hljs-string">&#x27;交易胜率&#x27;</span>,
+            <span class="hljs-string">&#x27;盈亏比&#x27;</span>,
+            <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>
+        ]
+    
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;组别&#x27;</span> <span class="hljs-keyword">in</span> df.columns <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;昵称&#x27;</span> <span class="hljs-keyword">in</span> df.columns:
+            <span class="hljs-variable">df</span> = df.drop(columns=[<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;昵称&#x27;</span>])
+    
+        <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> indicators:
+            <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> df.columns:
+                <span class="hljs-comment"># 先去掉逗号，再去掉百分号，然后转换为数值类型</span>
+                df[column] = pd.to_numeric(df[column].astype(<span class="hljs-built_in">str</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;%&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>), errors=<span class="hljs-string">&#x27;coerce&#x27;</span>)
+                <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;率&#x27;</span> <span class="hljs-keyword">in</span> column:  <span class="hljs-comment"># 假设包含&#x27;率&#x27;的列表示概率</span>
+                    df[column] = df[column] / <span class="hljs-number">100</span>
+    
+        <span class="hljs-variable">total_count</span> = <span class="hljs-built_in">len</span>(df)
+        <span class="hljs-variable">top_count</span> = <span class="hljs-built_in">int</span>(total_count * <span class="hljs-number">0.2</span>)
+        <span class="hljs-variable">bottom_count</span> = <span class="hljs-built_in">int</span>(total_count * <span class="hljs-number">0.4</span>)
+    
+        <span class="hljs-variable">top_20</span> = df.head(top_count)
+        
+        <span class="hljs-variable">bottom_40</span> = df.tail(bottom_count)
+    
+        <span class="hljs-variable">t_result</span> = {}
+    
+        <span class="hljs-keyword">for</span> indicator <span class="hljs-keyword">in</span> indicators:
+            <span class="hljs-keyword">if</span> indicator <span class="hljs-keyword">in</span> top_20.columns <span class="hljs-keyword">and</span> indicator <span class="hljs-keyword">in</span> bottom_40.columns:
+                <span class="hljs-variable">top_data</span> = top_20[indicator].dropna()
+                <span class="hljs-variable">bottom_data</span> = bottom_40[indicator].dropna()
+    
+                <span class="hljs-variable">t_stat</span>, <span class="hljs-variable">p_value</span> = stats.ttest_ind(top_data, bottom_data, equal_var=<span class="hljs-literal">False</span>)
+    
+                t_result[indicator] = {
+                    <span class="hljs-string">&#x27;t_static&#x27;</span>: t_stat,
+                    <span class="hljs-string">&#x27;p_value&#x27;</span>: p_value
+                }
+    
+        best_indicators[<span class="hljs-string">f&#x27;第<span class="hljs-subst">{i}</span>届&#x27;</span>] = t_result
+        <span class="hljs-variable">i</span> += <span class="hljs-number">1</span>
+    
+    <span class="hljs-comment"># 准备数据</span>
+    <span class="hljs-variable">results</span> = []
+    <span class="hljs-keyword">for</span> session, indicators <span class="hljs-keyword">in</span> best_indicators.items():
+        <span class="hljs-keyword">for</span> indicator, values <span class="hljs-keyword">in</span> indicators.items():
+            results.append({
+                <span class="hljs-string">&#x27;届数&#x27;</span>: session,  <span class="hljs-comment"># 使用 &#x27;届数&#x27; 作为列名</span>
+                <span class="hljs-string">&#x27;指标&#x27;</span>: indicator,
+                <span class="hljs-string">&#x27;t_statistic&#x27;</span>: values[<span class="hljs-string">&#x27;t_static&#x27;</span>],
+                <span class="hljs-string">&#x27;p_value&#x27;</span>: values[<span class="hljs-string">&#x27;p_value&#x27;</span>]
+            })
+    
+    <span class="hljs-variable">results_df</span> = pd.DataFrame(results)
+    
+    <span class="hljs-comment"># 设置图形风格</span>
+    sns.<span class="hljs-built_in">set</span>(style=<span class="hljs-string">&quot;whitegrid&quot;</span>)
+    
+    <span class="hljs-comment"># 创建一个图形对象</span>
+    plt.figure(figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">8</span>))
+
+    plt.rcParams[<span class="hljs-string">&quot;font.sans-serif&quot;</span>]=[<span class="hljs-string">&quot;SimHei&quot;</span>] <span class="hljs-comment">#设置字体</span>
+    plt.rcParams[<span class="hljs-string">&quot;axes.unicode_minus&quot;</span>]=<span class="hljs-literal">False</span> <span class="hljs-comment">#该语句解决图像中的“-”负号的乱码问题</span>
+    
+    <span class="hljs-comment"># 绘制条形图，t统计量</span>
+    sns.barplot(data=results_df, x=<span class="hljs-string">&#x27;t_statistic&#x27;</span>, y=<span class="hljs-string">&#x27;指标&#x27;</span>, hue=<span class="hljs-string">&#x27;届数&#x27;</span>, dodge=<span class="hljs-literal">True</span>)
+    
+    <span class="hljs-comment"># 添加标题和标签</span>
+    plt.title(<span class="hljs-string">&#x27;T-检验结果可视化&#x27;</span>, fontsize=<span class="hljs-number">16</span>)
+    plt.xlabel(<span class="hljs-string">&#x27;T 统计量&#x27;</span>, fontsize=<span class="hljs-number">14</span>)
+    plt.ylabel(<span class="hljs-string">&#x27;&#x27;</span>)
+    plt.axvline(<span class="hljs-number">0</span>, color=<span class="hljs-string">&#x27;grey&#x27;</span>, linestyle=<span class="hljs-string">&#x27;--&#x27;</span>)  <span class="hljs-comment"># 添加一条垂直线，表示 t 统计量为 0 的位置</span>
+    plt.legend(title=<span class="hljs-string">&#x27;届数&#x27;</span>)
+    plt.tight_layout()
+
+    
+    <span class="hljs-comment"># 显示图形</span>
+    plt.savefig(<span class="hljs-string">&#x27;D:/finance/src/images/t.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)
+    plt.close()
+                            </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_2_2_2.png" class="photo"></div><p class="md-pp">图2.2.2.2 T-检验结果可视化图</p><p class="md-p">根据图中的可视化结果，我们可以通过观察各指标的 P 值来判断其与盈利能力的关联性。通常情况下，P 值越小，表示该指标与盈利能力的相关性越强，于是我们能够得出以下与盈利能力相关性较强的指标：</p><p class="md-p"><strong>累计净值：</strong>P 值较小，尤其在第 10 届和第 11 届表现显著。这表明累计净值的变化与盈利能力具有较强的相关性。</p><p class="md-p"><strong>累计净利润：</strong>累计净利润在第 10 届和第 14 届的 P 值较小，说明累计净利润与盈利能力之间存在明显的关联。</p><p class="md-p"><strong>盈利天数：</strong>盈利天数的第 10 届和第 15 届的 P 值较低，表明盈利天数的多少直接影响盈利能力。</p><p class="md-p"><strong>交易胜率：</strong>交易胜率的第 10 届和第 12 届的 P 值较小，说明交易胜率的高低对盈利能力有显著影响。</p><p class="md-p"><strong>期末权益：</strong>期末权益的第 10 届和第 11 届的 P 值较低，显示期末权益的大小与盈利能力存在一定程度的关联。</p><p class="md-p">上述指标在第 6 届到第 16 届中的某些届别表现出较低的 P 值，意味着它们在这些特定时期内对盈利能力具有较强的影响力。然而，需要注意的是，P 值仅反映了统计显著性，并不能完全解释因果关系。在实际应用中，还需考虑其他因素综合评估盈利能力。</p><p class="md-p">在对基本数据统计、分析完成后，我们接着对图表数据进行处理，由于图表数据是选手某一属性随时间变化的数据，数据量过大，无法实时渲染至系统中，所以我们利用 PYTHON 语言对选中选手的图表数据进行可视化，生成静态图像。</p><p class="md-p">与基本数据不同的是，由于图表数据的数量级过大，以及图表数据对应 14-16 届参加选手的数量过多，我们选择对前 10 名 的选手进行数据可视化，查看他们随时间变化指标的整体情况，从而分析出他们盈利的原因。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+    <span class="hljs-keyword">import</span> matplotlib.dates <span class="hljs-keyword">as</span> mdates
+    
+    <span class="hljs-comment"># 获取最新的数据</span>
+    <span class="hljs-variable">latest_data</span> = non_empty_dataframes[-<span class="hljs-number">3</span>:]
+    <span class="hljs-variable">latest_data</span> = [df.head(<span class="hljs-number">10</span>)[<span class="hljs-string">&#x27;昵称&#x27;</span>] <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> latest_data]
+    
+    <span class="hljs-comment"># 定义文件路径</span>
+    <span class="hljs-variable">base_path</span> = <span class="hljs-string">r&#x27;bigData/src/graph_datails_&#x27;</span>
+    <span class="hljs-variable">file_names</span> = [<span class="hljs-string">&#x27;14.csv&#x27;</span>, <span class="hljs-string">&#x27;15.csv&#x27;</span>, <span class="hljs-string">&#x27;16.csv&#x27;</span>]
+    
+    <span class="hljs-comment"># 读取 CSV 文件并存储在字典中</span>
+    <span class="hljs-variable">data_14</span> = {}
+    <span class="hljs-variable">data_15</span> = {}
+    <span class="hljs-variable">data_16</span> = {}
+    
+    <span class="hljs-comment"># 读取 CSV 文件并过滤</span>
+    <span class="hljs-keyword">for</span> i, file_name <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(file_names):
+        <span class="hljs-variable">df</span> = pd.read_csv(base_path + file_name)
+        <span class="hljs-keyword">for</span> nickname <span class="hljs-keyword">in</span> latest_data[i]:
+            <span class="hljs-comment"># 过滤出对应昵称的数据</span>
+            <span class="hljs-variable">filtered_df</span> = df[df[<span class="hljs-string">&#x27;昵称&#x27;</span>] == nickname].copy()  <span class="hljs-comment"># 使用 .copy() 创建副本</span>
+            
+            <span class="hljs-comment"># 确保交易日期是日期格式</span>
+            filtered_df.loc[:, <span class="hljs-string">&#x27;交易日期&#x27;</span>] = pd.to_datetime(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>])
+            
+            <span class="hljs-keyword">if</span> file_name == <span class="hljs-string">&#x27;14.csv&#x27;</span>:
+                data_14[nickname] = filtered_df
+            <span class="hljs-keyword">elif</span> file_name == <span class="hljs-string">&#x27;15.csv&#x27;</span>:
+                data_15[nickname] = filtered_df
+            <span class="hljs-keyword">elif</span> file_name == <span class="hljs-string">&#x27;16.csv&#x27;</span>:
+                data_16[nickname] = filtered_df
+    
+    <span class="hljs-comment"># 可视化并保存图像</span>
+    <span class="hljs-keyword">for</span> i, (file_name, data_dict) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">zip</span>(file_names, [data_14, data_15, data_16]), start=<span class="hljs-number">14</span>):
+        <span class="hljs-keyword">for</span> nickname, filtered_df <span class="hljs-keyword">in</span> data_dict.items():
+            plt.figure(figsize=(<span class="hljs-number">14</span>, <span class="hljs-number">10</span>))
+            plt.rcParams[<span class="hljs-string">&quot;font.sans-serif&quot;</span>] = [<span class="hljs-string">&quot;SimHei&quot;</span>]  <span class="hljs-comment"># 设置字体</span>
+            plt.rcParams[<span class="hljs-string">&quot;axes.unicode_minus&quot;</span>] = <span class="hljs-literal">False</span>  <span class="hljs-comment"># 解决图像中的“-”负号的乱码问题</span>
+            
+            <span class="hljs-comment"># 绘制图表，调整散点大小</span>
+            plt.plot(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>], filtered_df[<span class="hljs-string">&#x27;净值&#x27;</span>], label=<span class="hljs-string">&#x27;净值&#x27;</span>, linewidth=<span class="hljs-number">3</span>)
+            plt.plot(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>], filtered_df[<span class="hljs-string">&#x27;毛利润&#x27;</span>], label=<span class="hljs-string">&#x27;毛利润&#x27;</span>, linewidth=<span class="hljs-number">3</span>)
+            plt.plot(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>], filtered_df[<span class="hljs-string">&#x27;手续费&#x27;</span>], label=<span class="hljs-string">&#x27;手续费&#x27;</span>, linewidth=<span class="hljs-number">3</span>)
+            plt.plot(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>], filtered_df[<span class="hljs-string">&#x27;净利润&#x27;</span>], label=<span class="hljs-string">&#x27;净利润&#x27;</span>, linewidth=<span class="hljs-number">3</span>)
+            plt.plot(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>], filtered_df[<span class="hljs-string">&#x27;利润率&#x27;</span>], label=<span class="hljs-string">&#x27;利润率&#x27;</span>, linewidth=<span class="hljs-number">3</span>)
+            plt.plot(filtered_df[<span class="hljs-string">&#x27;交易日期&#x27;</span>], filtered_df[<span class="hljs-string">&#x27;最大本金收益率&#x27;</span>], label=<span class="hljs-string">&#x27;最大本金收益率&#x27;</span>, linewidth=<span class="hljs-number">3</span>)
+    
+            <span class="hljs-comment"># 设置图表标题和标签</span>
+            plt.title(<span class="hljs-string">f&#x27;<span class="hljs-subst">{nickname}</span> 数据可视化 (<span class="hljs-subst">{file_name}</span>)&#x27;</span>)
+            plt.xlabel(<span class="hljs-string">&#x27;交易日期&#x27;</span>)
+            plt.ylabel(<span class="hljs-string">&#x27;值&#x27;</span>)
+            plt.legend()
+    
+            <span class="hljs-comment"># 设置X轴日期格式和刻度</span>
+            plt.xticks(rotation=<span class="hljs-number">45</span>)  <span class="hljs-comment"># 旋转X轴标签</span>
+            plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=<span class="hljs-number">5</span>))  <span class="hljs-comment"># 每5天一个刻度</span>
+            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter(<span class="hljs-string">&#x27;%Y-%m-%d&#x27;</span>))  <span class="hljs-comment"># 设置日期格式</span>
+    
+            <span class="hljs-comment"># 保存图像</span>
+            plt.savefig(<span class="hljs-string">f&#x27;bigData/src/graph_<span class="hljs-subst">{i}</span>_<span class="hljs-subst">{nickname}</span>.png&#x27;</span>)
+            plt.close()  <span class="hljs-comment"># 关闭当前图形以释放内存</span>
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_2_2_3.png" class="photo"></div><p class="md-pp">图2.2.2.3 第14届前10名选手时间变化图</p><p class="md-p">通过对第 14 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p><p class="md-p"><strong>净值增长稳定且显著：</strong>所有排名靠前的选手（如“冠军之鼎”、“逆天而行”）的净值曲线呈现长期稳定上升趋势，无剧烈回撤。</p><p class="md-p"><strong>高毛利润与低手续费占比：</strong>毛利润曲线普遍位于高位（如“理性稳健”毛利润达 250,000 以上），而手续费占比相对较低（如“完美博哥”中手续费与毛利润的比值较小）。</p><p class="md-p"><strong>净利润与税率优化：</strong>净利润曲线与毛利润保持同步增长（如“彩虹14”净利润达 2.5），且税率控制得当（如“福海”税率未显著压缩净利润）。</p><p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>部分选手（如“逆天而行”）的 ROI 曲线陡峭，短期内实现本金翻倍（如从 0 升至 500,000）。</p><div class="md-div"><img src="./images/p2_2_2_4.png" class="photo"></div><p class="md-pp">图2.2.2.4 第15届前10名选手时间变化图</p><p class="md-p">通过对第 15 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p><p class="md-p"><strong>净值曲线的稳定性与增长性：</strong>顶级选手（如“逆天而行”）的净值曲线呈现平滑上升趋势（从 0.0 升至 1.2），无剧烈波动或回撤。部分选手（如“jyfyl”）虽净值波动较大（峰值 5.0），但整体趋势向上。</p><p class="md-p"><strong>高净利润与成本控制：</strong>“炒期货最重要的是开心”净利润与毛利润的比值较高（图表显示净利润接近 1.0）。“光期555”手续费占比极低（净值 6-8 时手续费几乎无影响）。</p><p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>“jyfyl”的 ROI 峰值显著（虽波动大，但短期收益极高）。“逆天而行” ROI 稳定增长（0.0 → 1.2）。</p><p class="md-p"><strong>风险控制能力（回撤小）：</strong>“灵性投资-觉念行者”净值曲线虽为负值（-3.0 至 -0.5），但后期逐步修复，显示抗风险能力。“彩虹14”无剧烈下跌（图表未显示具体数值，但曲线平滑）。</p><div class="md-div"><img src="./images/p2_2_2_5.png" class="photo"></div><p class="md-pp">图2.2.2.5 第16届前10名选手时间变化图</p><p class="md-p">通过对第 16 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p><p class="md-p"><strong>净值曲线的稳定增长：</strong>“彩虹14”和“jyfyl”的净值曲线呈现持续上升趋势（“彩虹14” 净值从 0.0 升至 3.5，“jyfyl” 从 0.0 升至 3.0），且波动较小。理性稳健的净值高达 40,000，显示长期积累的稳定收益。</p><p class="md-p"><strong>高净利润与成本控制：</strong>“jyfyl”和“彩虹14”的净利润与毛利润比值较高，手续费占比低。“严守套利对冲”的净利润曲线平滑，显示高效的成本管理。</p><p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>“逆天而行”的 ROI 稳步增长（0.0 → 0.8），“彩虹14”的 ROI 峰值显著（3.5）。</p><p class="md-p"><strong>风险控制（低回撤）：</strong>“冠军之鼎”净值虽短暂为负（-0.5），但迅速修复，显示抗风险能力。“理性稳健”的净值无回撤，体现严格止损或分散投资。</p><p class="md-p"><strong>长期适应性：</strong>“炒期货最重要的是开心”的净值在多年跨度（2015-2023）中保持增长。</p><p class="md-p"><strong>利润率与税率优化：</strong>“福海”和“灵性投资”的税率曲线平缓，未显著挤压净利润。</p><p class="md-p">综合上述三届图表数据的分析，我们能够归纳得出盈利能力强的共同模式：稳定净值增长（低回撤） + 高净利润率（低成本） + 高 ROI（收益能力） + 严格风控。其中，净值曲线的稳定性和成本控制能力是三届最一致的共性，而短期爆发力（如高 ROI）和长期复利则是差异化补充。简单来讲，就是选手的净值稳定增长、利润率高以及本金收益率高则代表盈利能力强。</p><p class="md-p">以上，我们通过对基本数据的分析以及图表数据的分析，得出几个与盈利能力强的指标：如累计净值、累计净利润，我们接下来使用 DBSCAN 方法对选手进行聚类，识别出不同特征组合的选手群体，以验证我们的结论是否正确。此处，我们选择对前 20% 和后 40% 的选手进行聚类分析。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">from</span> sklearn.cluster <span class="hljs-keyword">import</span> DBSCAN
+    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+    <span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+    
+    <span class="hljs-comment"># 设置图形风格</span>
+    sns.<span class="hljs-built_in">set</span>(style=<span class="hljs-string">&quot;whitegrid&quot;</span>)
+    
+    <span class="hljs-variable">kmeans_results</span> = {}
+    <span class="hljs-variable">i</span> = <span class="hljs-number">6</span>
+    
+    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+        <span class="hljs-comment"># 选择需要分析的指标</span>
+        <span class="hljs-variable">indicators</span> = [
+            <span class="hljs-string">&#x27;累计净值&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净利润&#x27;</span>
+        ]
+    
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;组别&#x27;</span> <span class="hljs-keyword">in</span> df.columns <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;昵称&#x27;</span> <span class="hljs-keyword">in</span> df.columns:
+            <span class="hljs-variable">df</span> = df.drop(columns=[<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;昵称&#x27;</span>])
+    
+        <span class="hljs-comment"># 转换为数值类型</span>
+        <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> indicators:
+            <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> df.columns:
+                df[column] = pd.to_numeric(df[column].astype(<span class="hljs-built_in">str</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>), errors=<span class="hljs-string">&#x27;coerce&#x27;</span>)
+    
+        <span class="hljs-variable">total_count</span> = <span class="hljs-built_in">len</span>(df)
+        <span class="hljs-variable">top_count</span> = <span class="hljs-built_in">int</span>(total_count * <span class="hljs-number">0.2</span>)
+        <span class="hljs-variable">bottom_count</span> = <span class="hljs-built_in">int</span>(total_count * <span class="hljs-number">0.4</span>)
+    
+        <span class="hljs-comment"># 选择前20%的选手</span>
+        <span class="hljs-variable">top_20</span> = df.head(top_count).copy()
+        <span class="hljs-comment"># 选择后40%的选手</span>
+        <span class="hljs-variable">bottom_40</span> = df.tail(bottom_count).copy()
+    
+        <span class="hljs-comment"># DBSCAN 聚类</span>
+        <span class="hljs-keyword">for</span> group, group_data <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>([<span class="hljs-string">&#x27;前20%&#x27;</span>, <span class="hljs-string">&#x27;后40%&#x27;</span>], [top_20, bottom_40]):
+            <span class="hljs-variable">dbscan_data</span> = group_data[indicators].dropna()
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dbscan_data.empty <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(dbscan_data) &gt; <span class="hljs-number">1</span>:  <span class="hljs-comment"># 确保有数据进行聚类</span>
+                <span class="hljs-variable">dbscan</span> = DBSCAN(eps=<span class="hljs-number">0.5</span>, min_samples=<span class="hljs-number">5</span>)  <span class="hljs-comment"># 设置 ε 和最小样本数</span>
+                group_data[<span class="hljs-string">&#x27;Cluster&#x27;</span>] = dbscan.fit_predict(dbscan_data)
+    
+        <span class="hljs-comment"># 合并前20%和后40%的数据以便绘图</span>
+        <span class="hljs-variable">combined_data</span> = pd.concat([top_20.assign(Group=<span class="hljs-string">&#x27;前20%&#x27;</span>), bottom_40.assign(Group=<span class="hljs-string">&#x27;后40%&#x27;</span>)])
+    
+        <span class="hljs-comment"># 可视化聚类结果</span>
+        plt.figure(figsize=(<span class="hljs-number">10</span>, <span class="hljs-number">6</span>))
+        plt.rcParams[<span class="hljs-string">&quot;font.sans-serif&quot;</span>] = [<span class="hljs-string">&quot;SimHei&quot;</span>]  <span class="hljs-comment"># 设置字体</span>
+        plt.rcParams[<span class="hljs-string">&quot;axes.unicode_minus&quot;</span>] = <span class="hljs-literal">False</span>  <span class="hljs-comment"># 解决图像中的“-”负号的乱码问题</span>
+    
+        <span class="hljs-comment"># 绘制聚类结果</span>
+        sns.scatterplot(data=combined_data, x=<span class="hljs-string">&#x27;累计净值&#x27;</span>, y=<span class="hljs-string">&#x27;累计净利润&#x27;</span>, hue=<span class="hljs-string">&#x27;Group&#x27;</span>, palette={<span class="hljs-string">&#x27;前20%&#x27;</span>: <span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-string">&#x27;后40%&#x27;</span>: <span class="hljs-string">&#x27;orange&#x27;</span>}, s=<span class="hljs-number">100</span>, style=<span class="hljs-string">&#x27;Group&#x27;</span>, markers=[<span class="hljs-string">&#x27;o&#x27;</span>, <span class="hljs-string">&#x27;s&#x27;</span>])
+    
+        plt.title(<span class="hljs-string">f&#x27;<span class="hljs-subst">{i}</span>届 DBSCAN 聚类结果&#x27;</span>)
+        plt.xlabel(<span class="hljs-string">&#x27;累计净值&#x27;</span>)
+        plt.ylabel(<span class="hljs-string">&#x27;累计净利润&#x27;</span>)
+        plt.legend(title=<span class="hljs-string">&#x27;组别&#x27;</span>)
+        plt.tight_layout()
+        plt.savefig(<span class="hljs-string">f&#x27;D:/finance/bigData/src/dbscan_results_<span class="hljs-subst">{i}</span>届.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)
+        plt.close()
+    
+        <span class="hljs-variable">i</span> += <span class="hljs-number">1</span>
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_2_2_6.png" class="photo"></div><p class="md-pp">图2.2.2.6 第6-16届DBSCAN可视化图</p><p class="md-p">根据 DBSCAN 聚类结果，我们能够得出净值与净利润确实是影响选手盈利能力的重要指标，前 20% 的选手与后 40% 的选手相比，同样净值的情况下，净利润通常更高；而净利润相同时，净值又通常更高。但是也存在小部分情况，前 20% 的个别选手的净值与净利润比后 40% 的一些选手低，但影响选手盈利能力的不仅仅是这两个指标，也存在其它的因素，这里我们仅仅给出最相关的某几个指标。</p><h2 class="md-h two" id="section2.3">2.3综合多项指标分析 <a class="md-a" href="#section0">#</a></h2><p class="md-p">在单项指标分析中，我们得出与选手盈利能力较相关的指标有累计净利润、累计净值以及本金收益率，但我们仅针对单项指标进行分析，通过聚类结果验证我们的结论存在一定的合理性。接下来，我们将分析综合多个指标的情况下，选手的盈利能力与指标集的关系。</p><p class="md-p">直观地来讲，将影响选手盈利能力大的单项指标简单组合，应该也是对选手的盈利能力有较大影响的，但我们希望能够找出更广泛的指标集合。</p><p class="md-p">在机器学习中，存在关联规则的概念，即某一元素与另一元素存在较强的关联性时，它们同时存在的概率大，还存在另一概念为频繁项集，挖掘关联规则需要利用频繁项集，而频繁项集代表着元素集合出现的次数超过某一阈值，那我们就能利用盈利能力前列的选手集，从单项指标出发，生成“频繁项集”，即频繁出现的多项指标集合，在其中我们进一步筛选出第 6-16 届出现总次数较多的频繁项集作为最可能影响选手盈利能力的指标集。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">from</span> mlxtend.frequent_patterns <span class="hljs-keyword">import</span> apriori, association_rules
+    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+    <span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+    
+    <span class="hljs-comment"># 初始化字典来存储频繁项集和相关规则的计数</span>
+    <span class="hljs-variable">frequent_itemset_counts</span> = {}
+    <span class="hljs-variable">relevant_rule_counts</span> = {}
+    
+    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+        <span class="hljs-variable">indicators</span> = [
+            <span class="hljs-string">&#x27;组账户数&#x27;</span>,
+            <span class="hljs-string">&#x27;期初权益&#x27;</span>,
+            <span class="hljs-string">&#x27;期末权益&#x27;</span>,
+            <span class="hljs-string">&#x27;累计入金&#x27;</span>,
+            <span class="hljs-string">&#x27;累计出金&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净值&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净利润&#x27;</span>,
+            <span class="hljs-string">&#x27;盈利天数&#x27;</span>,
+            <span class="hljs-string">&#x27;亏损天数&#x27;</span>,
+            <span class="hljs-string">&#x27;交易胜率&#x27;</span>,
+            <span class="hljs-string">&#x27;盈亏比&#x27;</span>,
+            <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>
+        ]
+    
+        <span class="hljs-comment"># 删除不需要的列</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;组别&#x27;</span> <span class="hljs-keyword">in</span> df.columns <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;昵称&#x27;</span> <span class="hljs-keyword">in</span> df.columns:
+            <span class="hljs-variable">df</span> = df.drop(columns=[<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;昵称&#x27;</span>])
+    
+        <span class="hljs-comment"># 数据清洗</span>
+        <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> indicators:
+            <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> df.columns:
+                df[column] = pd.to_numeric(df[column].astype(<span class="hljs-built_in">str</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;%&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>), errors=<span class="hljs-string">&#x27;coerce&#x27;</span>)
+                <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;率&#x27;</span> <span class="hljs-keyword">in</span> column:  <span class="hljs-comment"># 假设包含&#x27;率&#x27;的列表示概率</span>
+                    df[column] = df[column] / <span class="hljs-number">100</span>
+    
+        <span class="hljs-comment"># 选出前20%的选手</span>
+        <span class="hljs-variable">total_count</span> = <span class="hljs-built_in">len</span>(df)
+        <span class="hljs-variable">top_count</span> = <span class="hljs-built_in">int</span>(total_count * <span class="hljs-number">0.2</span>)
+        <span class="hljs-variable">top_20</span> = df.head(top_count)
+    
+        <span class="hljs-comment"># 将所需的指标转换为布尔值，以便进行关联规则挖掘</span>
+        <span class="hljs-variable">features</span> = top_20[indicators].copy()
+    
+        <span class="hljs-comment"># 计算均值并进行布尔化处理</span>
+        <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> indicators:
+            <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> features.columns:
+                <span class="hljs-variable">mean_value</span> = features[column].mean()
+                <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> [<span class="hljs-string">&#x27;亏损天数&#x27;</span>, <span class="hljs-string">&#x27;累计出金&#x27;</span>, <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>]:
+                    features[column] = (features[column] &lt; mean_value)
+                <span class="hljs-keyword">else</span>:
+                    features[column] = (features[column] &gt;= mean_value)
+    
+        <span class="hljs-comment"># 确保所有列都是布尔类型</span>
+        <span class="hljs-variable">features</span> = features.astype(<span class="hljs-built_in">bool</span>)
+    
+        <span class="hljs-comment"># 计算频繁项集</span>
+        <span class="hljs-variable">frequent_itemsets</span> = apriori(features, min_support=<span class="hljs-number">0.1</span>, use_colnames=<span class="hljs-literal">True</span>)
+    
+        <span class="hljs-comment"># 统计每一种频繁项集的数量</span>
+        <span class="hljs-keyword">for</span> index, row <span class="hljs-keyword">in</span> frequent_itemsets.iterrows():
+            <span class="hljs-variable">itemset</span> = <span class="hljs-built_in">frozenset</span>(row[<span class="hljs-string">&#x27;itemsets&#x27;</span>])  <span class="hljs-comment"># 使用 frozenset 作为不可变的集合，确保顺序不影响</span>
+            <span class="hljs-keyword">if</span> itemset <span class="hljs-keyword">in</span> frequent_itemset_counts:
+                frequent_itemset_counts[itemset] += <span class="hljs-number">1</span>  <span class="hljs-comment"># 如果存在，加1</span>
+            <span class="hljs-keyword">else</span>:
+                frequent_itemset_counts[itemset] = <span class="hljs-number">1</span>  <span class="hljs-comment"># 否则初始化为1</span>
+    
+        <span class="hljs-comment"># 生成关联规则</span>
+        <span class="hljs-variable">rules</span> = association_rules(frequent_itemsets, metric=<span class="hljs-string">&quot;lift&quot;</span>, min_threshold=<span class="hljs-number">1</span>)
+    
+        <span class="hljs-comment"># 进一步分析与盈利能力最相关的规则</span>
+        <span class="hljs-variable">relevant_rules</span> = rules[(rules[<span class="hljs-string">&#x27;antecedents&#x27;</span>].apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-string">&#x27;累计净利润&#x27;</span> <span class="hljs-keyword">in</span> x <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;累计净值&#x27;</span> <span class="hljs-keyword">in</span> x)) &amp; (rules[<span class="hljs-string">&#x27;confidence&#x27;</span>] &gt; <span class="hljs-number">0.9</span>)].copy()
+    
+        <span class="hljs-comment"># 规则去重并计算平均置信度</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> relevant_rules.empty:
+            <span class="hljs-comment"># 创建规则集标签</span>
+            relevant_rules[<span class="hljs-string">&#x27;rule_set&#x27;</span>] = relevant_rules[<span class="hljs-string">&#x27;antecedents&#x27;</span>].astype(<span class="hljs-built_in">str</span>) + <span class="hljs-string">&#x27; -&gt; &#x27;</span> + relevant_rules[<span class="hljs-string">&#x27;consequents&#x27;</span>].astype(<span class="hljs-built_in">str</span>)
+    
+            <span class="hljs-comment"># 统计每一种相关规则的数量</span>
+            <span class="hljs-keyword">for</span> index, row <span class="hljs-keyword">in</span> relevant_rules.iterrows():
+                <span class="hljs-variable">rule</span> = (<span class="hljs-built_in">frozenset</span>(row[<span class="hljs-string">&#x27;antecedents&#x27;</span>]), <span class="hljs-built_in">frozenset</span>(row[<span class="hljs-string">&#x27;consequents&#x27;</span>]))  <span class="hljs-comment"># 使用 frozenset 作为不可变的集合</span>
+                <span class="hljs-keyword">if</span> rule <span class="hljs-keyword">in</span> relevant_rule_counts:
+                    relevant_rule_counts[rule] += <span class="hljs-number">1</span>  <span class="hljs-comment"># 如果存在，加1</span>
+                <span class="hljs-keyword">else</span>:
+                    relevant_rule_counts[rule] = <span class="hljs-number">1</span>  <span class="hljs-comment"># 否则初始化为1</span>
+    
+    <span class="hljs-comment"># 输出频繁项集次数大于1的项并保存</span>
+    <span class="hljs-variable">filtered_itemsets</span> = {}  <span class="hljs-comment"># 使用字典来存储频繁项集及其计数</span>
+    <span class="hljs-keyword">for</span> itemset, count <span class="hljs-keyword">in</span> frequent_itemset_counts.items():
+        <span class="hljs-keyword">if</span> count &gt; <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(itemset) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> (<span class="hljs-string">&#x27;累计净利润&#x27;</span> <span class="hljs-keyword">in</span> itemset <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;累计净值&#x27;</span> <span class="hljs-keyword">in</span> itemset):
+            filtered_itemsets[<span class="hljs-built_in">str</span>(<span class="hljs-built_in">set</span>(itemset))] = count  <span class="hljs-comment"># 使用字典存储项集和计数</span>
+    
+    <span class="hljs-comment"># 将频繁项集保存为 DataFrame</span>
+    <span class="hljs-variable">itemset_df</span> = pd.DataFrame(<span class="hljs-built_in">list</span>(filtered_itemsets.items()), columns=[<span class="hljs-string">&#x27;itemset&#x27;</span>, <span class="hljs-string">&#x27;count&#x27;</span>])
+    
+    <span class="hljs-comment"># 可视化频繁项集</span>
+    plt.figure(figsize=(<span class="hljs-number">10</span>, <span class="hljs-number">6</span>))
+    plt.rcParams[<span class="hljs-string">&quot;font.sans-serif&quot;</span>] = [<span class="hljs-string">&quot;SimHei&quot;</span>]  <span class="hljs-comment"># 设置字体</span>
+    plt.rcParams[<span class="hljs-string">&quot;axes.unicode_minus&quot;</span>] = <span class="hljs-literal">False</span>  <span class="hljs-comment"># 该语句解决图像中的“-”负号的乱码问题</span>
+    sns.barplot(x=<span class="hljs-string">&#x27;count&#x27;</span>, y=<span class="hljs-string">&#x27;itemset&#x27;</span>, data=itemset_df)
+    plt.title(<span class="hljs-string">&#x27;频繁项集次数&#x27;</span>)
+    plt.xlabel(<span class="hljs-string">&#x27;次数&#x27;</span>)
+    plt.ylabel(<span class="hljs-string">&#x27;项集&#x27;</span>)
+    plt.yticks(fontsize=<span class="hljs-number">6</span>)
+    plt.tight_layout()
+    plt.savefig(<span class="hljs-string">&#x27;bigData/src/Apriori.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)
+    plt.close()
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_3_1.png" class="photo"></div><p class="md-pp">图2.3.1 第6-16届频繁项集统计图</p><p class="md-p">要确定哪些频繁项集可以作为稳定盈利选手在多个指标上的共性指标，我们需要关注那些出现频率较高的项集。根据统计图，我们尝试给出下面 10 个指标集作为长期稳定盈利选手的共性指标：</p><p class="md-p"><strong>{ 累计净值, 累计出金 }：</strong>这个项集出现的次数较多，表明它在多个稳定盈利选手中具有共性。<br><strong>{ 累计净值, 盈利天数 }：</strong>同样地，这个项集也具有较高的出现频率，可能是稳定盈利的一个标志。<br><strong>{ 累计净值, 组账户数 }：</strong>组账户数的多少可能与资金管理策略有关，这个项集的出现频率较高，也可能是一个重要的共性指标。<br><strong>{ 期末权益, 累计净利润 }：</strong>期末权益和累计净利润都是衡量投资表现的重要指标，这个项集的高频出现可能反映了稳定盈利的特点。<br><strong>{ 累计净值, 手续费/净利润 }：</strong>手续费与净利润的比例可以反映交易成本的控制能力，这个项集的出现频率较高，也可能是稳定盈利的一个共性特征。<br><strong>{ 累计净值, 盈亏比 }：</strong>盈亏比是评估交易系统性能的一个重要指标，这个项集的高频出现可能意味着稳定盈利选手在风险控制和收益获取上具有一定的共性。<br><strong>{ 累计净值, 交易胜率 }：</strong>交易胜率直接关系到交易的成败，这个项集的出现频率较高，可能也是稳定盈利的一个关键因素。<br><strong>{ 累计净值, 累计出金, 盈利天数 }：</strong>这个三项组合的项集出现频率较高，综合了累计净值、累计出金和盈利天数三个重要指标，可能是稳定盈利选手的一个显著共性。<br><strong>{ 累计净值, 累计出金, 组账户数 }：</strong>这个三项组合的项集也具有较高的出现频率，涉及到了资金管理和投资表现的多个方面，可能也是一个重要的共性指标。<br><strong>{ 累计净值, 盈利天数, 交易胜率 }：</strong>这个三项组合的项集出现频率较高，涵盖了盈利天数和交易胜率这两个直接影响盈利能力的指标，以及累计净值这一总体表现指标，可能也是稳定盈利选手的一个共性特征。</p><p class="md-p">需要注意的是，虽然这些项集的出现频率较高，但并不能保证它们就是稳定盈利的唯一或绝对共性指标。我们仅仅针对第 6-16 届前 20% 的选手集进行频繁项集的生成，尽可能地挖掘出各位长期稳定盈利选手的常出现的特征集合，将这些特征集合作为共性指标存在一定的合理性，频繁项集的生成能够帮助识别在成功选手中常见的特征，这些特征可能与他们的盈利能力相关。因此，利用这些特征作为共性指标，有助于理解成功的潜在因素。</p><p class="md-p">同时，也存在一定的局限性：仅分析前 20% 的选手可能导致样本偏差，忽略了其他可能成功的选手特征；频繁项集的挖掘只能揭示特征之间的关联性，而无法确定因果关系，即使某些特征在成功选手中频繁出现，也不能保证它们是导致盈利的原因；依赖于特定数据集生成的特征集合可能导致过拟合；每位选手的交易风格和策略可能存在显著差异，频繁项集的生成可能无法充分反映这些个体差异。</p><h1 class="md-h one" id="section3">3预测模型 <a class="md-a" href="#section0">#</a></h1><p class="md-p">要训练生成一个模型来对选手的长期稳定盈利能力排名预测，整体的思路如下：</p><p class="md-p"><strong>1、数据准备：</strong>收集和整合多个数据框，选择相关的指标进行分析；清洗数据，去掉不需要的列，并处理数据格式（去掉逗号和百分号，转换为数值类型）。<br><strong>2、变量确定：</strong>确定特征变量，即选择进行训练的指标；确定目标变量，即排名，由于数据集中并没有排名列，所以我们利用索引的大小来反映排名的先后。<br><strong>3、数据划分：</strong>将数据集分为训练集和测试集，我们对于多次参加的选手数据并没有进行均值计算，而是全部加入数据集进行训练或测试，扩大数据集以发现更多的模式。<br><strong>4、模型训练：</strong>初始化随机森林回归模型，设定树的数量，接着使用训练集进行模型训练，以学习特征与目标变量之间的关系。<br><strong>5、预测与评估：</strong>对测试集进行预测，得到预测结果。通过计算 R² （R² 值越接近 1 代表模型越准确）得分评估模型性能，判断预测效果的好坏。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                            <div class="language-label hidden">PYTHON</div>
+    <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
+    <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+    <span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> train_test_split
+    <span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestRegressor
+    <span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> r2_score
+    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+    <span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+    <span class="hljs-keyword">import</span> matplotlib
+    
+    <span class="hljs-comment"># 设置中文字体</span>
+    matplotlib.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;SimHei&#x27;</span>]  <span class="hljs-comment"># 使用黑体</span>
+    matplotlib.rcParams[<span class="hljs-string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="hljs-literal">False</span>  <span class="hljs-comment"># 解决负号显示问题</span>
+    
+    <span class="hljs-comment"># 初始化一个空的列表来存储所有数据框</span>
+    <span class="hljs-variable">all_data</span> = []
+    
+    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+        <span class="hljs-comment"># 选择需要分析的指标</span>
+        <span class="hljs-variable">indicators</span> = [
+            <span class="hljs-string">&#x27;组账户数&#x27;</span>,
+            <span class="hljs-string">&#x27;期初权益&#x27;</span>,
+            <span class="hljs-string">&#x27;期末权益&#x27;</span>,
+            <span class="hljs-string">&#x27;累计入金&#x27;</span>,
+            <span class="hljs-string">&#x27;累计出金&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净值&#x27;</span>,
+            <span class="hljs-string">&#x27;累计净利润&#x27;</span>,
+            <span class="hljs-string">&#x27;盈利天数&#x27;</span>,
+            <span class="hljs-string">&#x27;亏损天数&#x27;</span>,
+            <span class="hljs-string">&#x27;交易胜率&#x27;</span>,
+            <span class="hljs-string">&#x27;盈亏比&#x27;</span>,
+            <span class="hljs-string">&#x27;手续费/净利润&#x27;</span>
+        ]
+    
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;组别&#x27;</span> <span class="hljs-keyword">in</span> df.columns <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;昵称&#x27;</span> <span class="hljs-keyword">in</span> df.columns:
+            <span class="hljs-variable">df</span> = df.drop(columns=[<span class="hljs-string">&#x27;组别&#x27;</span>, <span class="hljs-string">&#x27;昵称&#x27;</span>])
+    
+        <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> indicators:
+            <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> df.columns:
+                <span class="hljs-comment"># 先去掉逗号，再去掉百分号，然后转换为数值类型</span>
+                df[column] = pd.to_numeric(df[column].astype(<span class="hljs-built_in">str</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;%&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>), errors=<span class="hljs-string">&#x27;coerce&#x27;</span>)
+                <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;率&#x27;</span> <span class="hljs-keyword">in</span> column:  <span class="hljs-comment"># 假设包含&#x27;率&#x27;的列表示概率</span>
+                    df[column] = df[column] / <span class="hljs-number">100</span>
+    
+        <span class="hljs-comment"># 将处理后的数据框添加到列表中</span>
+        all_data.append(df)
+    
+    <span class="hljs-comment"># 合并所有数据框</span>
+    <span class="hljs-variable">combined_df</span> = pd.concat(all_data, ignore_index=<span class="hljs-literal">True</span>)
+    
+    <span class="hljs-comment"># 选择特征和目标变量</span>
+    <span class="hljs-variable">X</span> = combined_df[indicators]  <span class="hljs-comment"># 特征变量</span>
+    <span class="hljs-variable">y</span> = combined_df.index  <span class="hljs-comment"># 目标变量（索引）</span>
+    
+    <span class="hljs-comment"># 划分训练集和测试集</span>
+    <span class="hljs-variable">X_train</span>, <span class="hljs-variable">X_test</span>, <span class="hljs-variable">y_train</span>, <span class="hljs-variable">y_test</span> = train_test_split(X, y, test_size=<span class="hljs-number">0.2</span>, random_state=<span class="hljs-number">42</span>)
+    
+    <span class="hljs-comment"># 初始化并训练随机森林回归模型</span>
+    <span class="hljs-variable">model</span> = RandomForestRegressor(n_estimators=<span class="hljs-number">100</span>, random_state=<span class="hljs-number">42</span>)
+    model.fit(X_train, y_train)
+    
+    <span class="hljs-comment"># 进行预测</span>
+    <span class="hljs-variable">y_pred</span> = model.predict(X_test)
+    
+    <span class="hljs-comment"># 评估模型性能</span>
+    <span class="hljs-variable">r2</span> = r2_score(y_test, y_pred)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;R² Score: <span class="hljs-subst">{r2}</span>&#x27;</span>)
+    
+    <span class="hljs-comment"># 输出预测结果</span>
+    <span class="hljs-variable">predictions</span> = pd.DataFrame({<span class="hljs-string">&#x27;实际排名&#x27;</span>: y_test, <span class="hljs-string">&#x27;预测排名&#x27;</span>: y_pred})
+    
+    <span class="hljs-comment"># 可视化预测结果与实际结果</span>
+    plt.figure(figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">6</span>))
+    
+    <span class="hljs-comment"># 散点图</span>
+    plt.subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>)
+    sns.scatterplot(x=y_test, y=y_pred)
+    plt.plot([y_test.<span class="hljs-built_in">min</span>(), y_test.<span class="hljs-built_in">max</span>()], [y_test.<span class="hljs-built_in">min</span>(), y_test.<span class="hljs-built_in">max</span>()], <span class="hljs-string">&#x27;r--&#x27;</span>)  <span class="hljs-comment"># 绘制y=x线</span>
+    plt.xlabel(<span class="hljs-string">&#x27;实际排名&#x27;</span>)
+    plt.ylabel(<span class="hljs-string">&#x27;预测排名&#x27;</span>)
+    plt.title(<span class="hljs-string">&#x27;实际排名与预测排名对比&#x27;</span>)
+    
+    <span class="hljs-comment"># 对比图</span>
+    plt.subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+    sns.histplot(predictions[<span class="hljs-string">&#x27;实际排名&#x27;</span>], color=<span class="hljs-string">&#x27;blue&#x27;</span>, label=<span class="hljs-string">&#x27;实际排名&#x27;</span>, kde=<span class="hljs-literal">True</span>, stat=<span class="hljs-string">&#x27;density&#x27;</span>, bins=<span class="hljs-number">30</span>)
+    sns.histplot(predictions[<span class="hljs-string">&#x27;预测排名&#x27;</span>], color=<span class="hljs-string">&#x27;orange&#x27;</span>, label=<span class="hljs-string">&#x27;预测排名&#x27;</span>, kde=<span class="hljs-literal">True</span>, stat=<span class="hljs-string">&#x27;density&#x27;</span>, bins=<span class="hljs-number">30</span>)
+    plt.xlabel(<span class="hljs-string">&#x27;排名&#x27;</span>)
+    plt.ylabel(<span class="hljs-string">&#x27;密度&#x27;</span>)
+    plt.title(<span class="hljs-string">&#x27;实际排名与预测排名分布&#x27;</span>)
+    plt.legend()
+    
+    plt.tight_layout()
+    
+    <span class="hljs-comment"># 保存为PNG图片</span>
+    plt.savefig(<span class="hljs-string">&#x27;bigData/src/forecast.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)  <span class="hljs-comment"># dpi可以调节图片清晰度</span>
+    plt.close()  <span class="hljs-comment"># 关闭图形以释放内存</span>
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p3_1.png" class="photo"></div><p class="md-pp">图3.1 预测排名与实际排名对比图</p><p class="md-p">从左侧散点图中可以看出，大部分点都集中在红色对角线附近，表明预测结果与实际排名较为接近，但存在一些偏差。</p><p class="md-p">右侧柱状图中蓝色柱子表示实际排名的分布，橙色柱子表示预测排名的分布。从中可以看到，实际排名和预测排名的分布在大多数区间内都比较接近，但在某些区间存在差异。</p><p class="md-p">笔者此处仅针对第 6-16 届的数据进行预测模型的训练与测试，并没有利用第 18 届选手的数据对其长期稳定盈利能力进行排名预测，所做工作有限，还存在可优化改进的地方。</p></h2></div></div><div class="mainBox-title">长期稳定盈利选手特征分析</div></div><div class="modal hidden"><section class="modal-top"><button class="modal-close">&times;</button></section><div class="modal-body"></div></div><div class="modal-overby hidden"></div><div class="full"><img src="" class="hidden"></div></body></html>
