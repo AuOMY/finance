@@ -1,0 +1,611 @@
+.boxBorder {
+    width: calc(80vw + 0.2vw);
+    height: calc(40vw + 0.2vw);
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 1.3vw 0 0 1.3vw;
+    border: 0.1vw gray solid;
+
+    box-sizing: border-box;
+}
+
+.mainBox {
+    display: flex;
+
+    width: 80vw;
+    height: 40vw;
+    
+    background-color: #1e1e1e;
+    
+    border-radius: 1.3vw 0 0 1.3vw;
+    
+    position: relative;
+    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mainBox-left {
+    width: 20vw;
+    height: 100%;
+    
+    background-color: #404040;
+    
+    border-radius: 1.3vw 0 0 1.3vw;
+}
+
+.mainBox-text {
+    display: flex;
+    gap: 0.7vw;
+
+    padding-top: 5vw;
+    padding-left: 2vw;
+}
+
+.mainBox-text .text {
+    width: 4vw;
+    height: 2vw;
+
+    background-color: #1e1e1e;
+
+    border-radius: 0.7vw;
+
+    font-size: 1vw;
+    color: gainsboro;
+    text-align: center;
+    line-height: 2vw;
+
+    cursor: pointer;
+}
+
+.text.text-css {
+    color: black;
+
+    background-color: goldenrod;
+}
+
+.mainBox-choice {
+    display: flex;
+    gap: 1.3vw;
+
+    flex-direction: column;
+
+    padding-top: 1vw;
+    padding-left: 1vw;
+}
+
+.mainBox-choice .choice {
+    width: 18vw;
+    height: 4vw;
+
+    background-color: #1e1e1e;
+
+    border-radius: 0.7vw;
+
+    color: gainsboro;
+    font-weight: bold;
+    text-align: center;
+    line-height: 4vw;
+
+    cursor: pointer;
+}
+
+.data-border {
+    border: gold solid 0.1vw;
+}
+
+.mainBox-right {
+    flex-grow: 1;
+    
+    width: 60vw;
+    height: 40vw;
+    
+    background-color: #1e1e1e;
+}
+
+.mainBox-board {
+    position: relative;
+
+    width: 60vw;
+    height: 40vw;
+}
+
+.mainBox-description {
+    position: absolute;
+
+    width: 50vw;
+    height: 4vw;
+
+    border-bottom: black solid 0.1vw;
+
+    color: white;
+    font-size: 1.3vw;
+    line-height: 4vw;
+
+    padding: 0 2vw;
+
+    box-sizing: border-box;
+}
+
+.pagination-container {
+    position: absolute;
+
+    top: 1vw;
+    left: 20vw;
+
+    text-align: center;
+}
+
+.pagination-container button {
+    width: 4vw;
+    height: 2vw;
+
+    background-color: #393939;
+
+    font-size: 1vw;
+    color: whitesmoke;
+
+    cursor: pointer;
+}
+
+.pagination-container span {
+    margin: 0 0.5vw 0 0.5vw;
+
+    color: whitesmoke;
+    font-size: 1vw;
+    font-weight: bold;
+}
+
+.pagination-container button:disabled {
+    background-color: #888;
+
+    color: black;
+
+    cursor: not-allowed;
+}
+
+.pagination-container input::-webkit-inner-spin-button,
+.pagination-container input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.pagination-container input {
+    margin: 0 0.5vw 0 0.5vw;
+
+    height: 2vw;
+
+    color: whitesmoke;
+    font-size: 1vw;
+    font-weight: bold;
+
+    border: 0.1vw solid #393939;
+
+    text-align: center;
+}
+
+.pagination-container input:focus {
+    border: 0.1vw solid white;
+}
+
+.dropdown-csv {
+    left: 50vw;
+
+    position: absolute;
+}
+
+.dropbtn-csv {
+    background-color: #1e1e1e;
+
+    width: 10vw;
+    height: 4vw;
+
+    color: white;
+    font-size: 1vw;
+    line-height: 4vw;
+    text-align: center;
+
+    border-bottom: black solid 0.1vw;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+  
+.dropdown-content-csv {
+    display: none;
+    
+    position: absolute;
+    
+    background-color: #404040;
+    
+    width: 10vw;
+    height: 9vw;
+    
+    box-shadow: 0 0 0.5vw 0 rgba(255,255,255,0.2);
+    
+    z-index: 1;
+
+    overflow: auto;
+}
+  
+.dropdown-content-csv p {
+    height: 3vw;
+
+    color: whitesmoke;
+    line-height: 3vw;
+
+    padding-left: 1vw;
+    
+    display: block;
+
+    cursor: pointer;
+}
+  
+.dropdown-content-csv p:hover {
+    background-color: #f1f1f1;
+    
+    color: black;
+}
+  
+.dropdown-csv:hover .dropdown-content-csv {
+    display: block;
+}
+
+.mainBox-input {
+    box-sizing: border-box;
+
+    position: absolute;
+
+    width: 100%;
+    height: 36vw;
+
+    top: 4vw;
+
+    overflow: auto;
+}
+
+table {
+    border-collapse: collapse;
+    
+    background-color: #111111;
+    
+    color: #ccc;
+
+    cursor: cell;
+}
+
+th {
+    background-color: black;
+
+    position: sticky;
+
+    top: 0;
+
+    white-space: nowrap;
+
+    text-align: center;
+
+    padding: 0.5vw;
+}
+
+td {
+    border-left: 0.1vw solid #ccc;
+    
+    text-align: center;
+
+    white-space: nowrap;
+
+    padding: 0.5vw;
+
+    box-sizing: border-box;
+}
+
+td:first-child {
+    border-left: none;
+}
+
+tr:nth-child(odd) {
+    background-color: #1f1f1f;
+}
+
+canvas:active {
+    cursor: grabbing;
+}
+
+.v-choice {
+    position: absolute;
+
+    width: 60vw;
+    height: 5vw;
+
+    border-bottom: black solid 0.1vw;
+
+    box-sizing: border-box;
+}
+
+.input-list {
+    position: absolute;
+
+    display: flex;
+    
+    gap: 1vw;
+
+    align-items: center;
+
+    width: 27vw;
+    height: 5vw;
+
+    padding-left: 1vw;
+}
+
+.v-input {
+    background-color: #393939;
+    
+    width: 8vw;
+    height: 2vw;
+
+    font-size: 1vw;
+    font-weight: bold;
+    color: whitesmoke;
+
+    border-radius: 1vw;
+
+    padding-left: 1vw;
+}
+
+.input-style {
+    border: goldenrod solid 0.1vw;
+    border-bottom: none;
+
+    border-radius: 0;
+}
+
+.v-start {
+    position: absolute;
+
+    background-color: #393939;
+
+    border-radius: 1.5vw;
+
+    width: 8vw;
+    height: 3vw;
+
+    left: 51vw;
+    top: 1vw;
+
+    color: whitesmoke;
+    font-size: 1vw;
+
+    line-height: 3vw;
+    
+    text-align: center;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+.v-bgc {
+    border-radius: 0;
+
+    box-shadow: 0 0 0.5vw 0 rgba(255,255,255,0.2);
+}
+
+.v-button {
+    position: absolute;
+
+    left: 46vw;
+    top: 1.5vw;
+
+    width: 4vw;
+    height: 2vw;
+
+    border-radius: 1vw;
+
+    text-align: center;
+
+    line-height: 2vw;
+
+    background-color: #393939;
+
+    color: whitesmoke;
+    font-size: 1vw;
+
+    cursor: pointer;
+}
+
+.options-style {
+    position: absolute;
+
+    width: 8vw;
+    max-height: 10vw;
+
+    border: goldenrod solid 0.1vw;
+    border-top: none;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    cursor: pointer;
+}
+
+.options {
+    background-color: #393939;
+    
+    width: 8vw;
+    height: 2vw;
+
+    font-size: 1vw;
+    font-weight: bold;
+    color: whitesmoke;
+
+    line-height: 2vw;
+
+    padding-left: 1vw;
+}
+
+.options:hover {
+    background-color: #f1f1f1;
+    
+    color: black;
+}
+
+#dataSet {
+    top: 3.5vw;
+    left: 1vw;
+
+    z-index: 1;
+}
+
+#datas {
+    top: 3.5vw;
+    left: 10vw;
+    
+    z-index: 1;
+}
+
+.v-board {
+    position: absolute;
+
+    background-color: #393939;
+
+    top: 4.5vw;
+    left: 51vw;
+
+    width: 8vw;
+
+    box-sizing: border-box;
+}
+
+.v-list {
+    width: 8vw;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    max-height: 10vw;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    box-shadow: 0 0 0.5vw 0 rgba(255,255,255,0.2);
+}
+
+.v-li {
+    width: 6.5vw;
+    height: 2vw;
+
+    margin: 0.25vw 0vw 0.25vw 0.5vw;
+
+    background-color: #393939;
+    
+    box-shadow: inset 0 0 1vw rgba(0, 0, 0, 0.4);
+
+    color: whitesmoke;
+    font-size: 1vw;
+
+    line-height: 2vw;
+
+    text-align: center;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+    
+    z-index: 1;
+}
+
+.v-li:last-child {
+    margin-bottom: 0.5vw;
+}
+
+.v-style {
+    background-color: #1e1e1e;
+
+    box-shadow: 0 0 1vw rgba(0, 0, 0, 0.5);
+}
+
+.v-pad {
+    position: absolute;
+
+    top: 5vw;
+
+    min-width: 60vw;
+    height: 35vw;
+}
+
+.analysis-input {
+    box-sizing: border-box;
+
+    position: absolute;
+
+    width: 60vw;
+    height: 40vw;
+
+    top: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    width: 0.5vw;
+    height: 0.5vw;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #404040;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #606060;
+}
+
+.mainBox-title {
+    position: absolute;
+    
+    top: 2vw;
+    left: 2vw;
+    
+    font-size: 1.3vw;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 
+        0.1vw 0.1vw 0 grey, 
+        0.1vw 0.1vw 0 grey, 
+        0.2vw 0.2vw 0 yellow;
+}
+
+.hidden {
+    display: none;
+}
+
+.tooltip {
+    position: absolute;
+
+    background-color: rgba(255, 255, 255, 0.8);
+    
+    color: black;
+    font-weight: bold;
+    font-size: 1vw;
+
+    padding: 0.2vw;
+
+    border-radius: 0.2vw;
+    
+    pointer-events: none;
+}
