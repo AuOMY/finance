@@ -784,7 +784,7 @@
     plt.tight_layout()
     plt.savefig(<span class="hljs-string">&#x27;bigData/src/Apriori.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)
     plt.close()
-                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_3_1.png" class="photo"></div><p class="md-pp">图2.3.1 第6-16届频繁项集统计图</p><p class="md-p">要确定哪些频繁项集可以作为稳定盈利选手在多个指标上的共性指标，我们需要关注那些出现频率较高的项集。根据统计图，我们尝试给出下面 10 个指标集作为长期稳定盈利选手的共性指标：</p><p class="md-p"><strong>{ 累计净值, 累计出金 }：</strong>这个项集出现的次数较多，表明它在多个稳定盈利选手中具有共性。<br><strong>{ 累计净值, 盈利天数 }：</strong>同样地，这个项集也具有较高的出现频率，可能是稳定盈利的一个标志。<br><strong>{ 累计净值, 组账户数 }：</strong>组账户数的多少可能与资金管理策略有关，这个项集的出现频率较高，也可能是一个重要的共性指标。<br><strong>{ 期末权益, 累计净利润 }：</strong>期末权益和累计净利润都是衡量投资表现的重要指标，这个项集的高频出现可能反映了稳定盈利的特点。<br><strong>{ 累计净值, 手续费/净利润 }：</strong>手续费与净利润的比例可以反映交易成本的控制能力，这个项集的出现频率较高，也可能是稳定盈利的一个共性特征。<br><strong>{ 累计净值, 盈亏比 }：</strong>盈亏比是评估交易系统性能的一个重要指标，这个项集的高频出现可能意味着稳定盈利选手在风险控制和收益获取上具有一定的共性。<br><strong>{ 累计净值, 交易胜率 }：</strong>交易胜率直接关系到交易的成败，这个项集的出现频率较高，可能也是稳定盈利的一个关键因素。<br><strong>{ 累计净值, 累计出金, 盈利天数 }：</strong>这个三项组合的项集出现频率较高，综合了累计净值、累计出金和盈利天数三个重要指标，可能是稳定盈利选手的一个显著共性。<br><strong>{ 累计净值, 累计出金, 组账户数 }：</strong>这个三项组合的项集也具有较高的出现频率，涉及到了资金管理和投资表现的多个方面，可能也是一个重要的共性指标。<br><strong>{ 累计净值, 盈利天数, 交易胜率 }：</strong>这个三项组合的项集出现频率较高，涵盖了盈利天数和交易胜率这两个直接影响盈利能力的指标，以及累计净值这一总体表现指标，可能也是稳定盈利选手的一个共性特征。</p><p class="md-p">需要注意的是，虽然这些项集的出现频率较高，但并不能保证它们就是稳定盈利的唯一或绝对共性指标。我们仅仅针对第 6-16 届前 20% 的选手集进行频繁项集的生成，尽可能地挖掘出各位长期稳定盈利选手的常出现的特征集合，将这些特征集合作为共性指标存在一定的合理性，频繁项集的生成能够帮助识别在成功选手中常见的特征，这些特征可能与他们的盈利能力相关。因此，利用这些特征作为共性指标，有助于理解成功的潜在因素。</p><p class="md-p">同时，也存在一定的局限性：仅分析前 20% 的选手可能导致样本偏差，忽略了其他可能成功的选手特征；频繁项集的挖掘只能揭示特征之间的关联性，而无法确定因果关系，即使某些特征在成功选手中频繁出现，也不能保证它们是导致盈利的原因；依赖于特定数据集生成的特征集合可能导致过拟合；每位选手的交易风格和策略可能存在显著差异，频繁项集的生成可能无法充分反映这些个体差异。</p><h1 class="md-h one" id="section3">3预测模型 <a class="md-a" href="#section0">#</a></h1><p class="md-p">要训练生成一个模型来对选手的长期稳定盈利能力排名预测，整体的思路如下：</p><p class="md-p"><strong>1、数据准备：</strong>收集和整合多个数据框，选择相关的指标进行分析；清洗数据，去掉不需要的列，并处理数据格式（去掉逗号和百分号，转换为数值类型）。<br><strong>2、变量确定：</strong>确定特征变量，即选择进行训练的指标；确定目标变量，即排名，由于数据集中并没有排名列，所以我们利用索引的大小来反映排名的先后。<br><strong>3、数据划分：</strong>将数据集分为训练集和测试集，我们对于多次参加的选手数据并没有进行均值计算，而是全部加入数据集进行训练或测试，扩大数据集以发现更多的模式。<br><strong>4、模型训练：</strong>初始化随机森林回归模型，设定树的数量，接着使用训练集进行模型训练，以学习特征与目标变量之间的关系。<br><strong>5、预测与评估：</strong>对测试集进行预测，得到预测结果。通过计算 R² （R² 值越接近 1 代表模型越准确）得分评估模型性能，判断预测效果的好坏。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p2_3_1.png" class="photo"></div><p class="md-pp">图2.3.1 第6-16届频繁项集统计图</p><p class="md-p">要确定哪些频繁项集可以作为稳定盈利选手在多个指标上的共性指标，我们需要关注那些出现频率较高的项集。根据统计图，我们尝试给出下面 10 个指标集作为长期稳定盈利选手的共性指标：</p><p class="md-p"><strong>{ 累计净值, 累计出金 }：</strong>这个项集出现的次数较多，表明它在多个稳定盈利选手中具有共性。<br><strong>{ 累计净值, 盈利天数 }：</strong>同样地，这个项集也具有较高的出现频率，可能是稳定盈利的一个标志。<br><strong>{ 累计净值, 组账户数 }：</strong>组账户数的多少可能与资金管理策略有关，这个项集的出现频率较高，也可能是一个重要的共性指标。<br><strong>{ 期末权益, 累计净利润 }：</strong>期末权益和累计净利润都是衡量投资表现的重要指标，这个项集的高频出现可能反映了稳定盈利的特点。<br><strong>{ 累计净值, 手续费/净利润 }：</strong>手续费与净利润的比例可以反映交易成本的控制能力，这个项集的出现频率较高，也可能是稳定盈利的一个共性特征。<br><strong>{ 累计净值, 盈亏比 }：</strong>盈亏比是评估交易系统性能的一个重要指标，这个项集的高频出现可能意味着稳定盈利选手在风险控制和收益获取上具有一定的共性。<br><strong>{ 累计净值, 交易胜率 }：</strong>交易胜率直接关系到交易的成败，这个项集的出现频率较高，可能也是稳定盈利的一个关键因素。<br><strong>{ 累计净值, 累计出金, 盈利天数 }：</strong>这个三项组合的项集出现频率较高，综合了累计净值、累计出金和盈利天数三个重要指标，可能是稳定盈利选手的一个显著共性。<br><strong>{ 累计净值, 累计出金, 组账户数 }：</strong>这个三项组合的项集也具有较高的出现频率，涉及到了资金管理和投资表现的多个方面，可能也是一个重要的共性指标。<br><strong>{ 累计净值, 盈利天数, 交易胜率 }：</strong>这个三项组合的项集出现频率较高，涵盖了盈利天数和交易胜率这两个直接影响盈利能力的指标，以及累计净值这一总体表现指标，可能也是稳定盈利选手的一个共性特征。</p><p class="md-p">需要注意的是，虽然这些项集的出现频率较高，但并不能保证它们就是稳定盈利的唯一或绝对共性指标。我们仅仅针对第 6-16 届前 20% 的选手集进行频繁项集的生成，尽可能地挖掘出各位长期稳定盈利选手的常出现的特征集合，将这些特征集合作为共性指标存在一定的合理性，频繁项集的生成能够帮助识别在成功选手中常见的特征，这些特征可能与他们的盈利能力相关。因此，利用这些特征作为共性指标，有助于理解成功的潜在因素。</p><p class="md-p">同时，也存在一定的局限性：仅分析前 20% 的选手可能导致样本偏差，忽略了其他可能成功的选手特征；频繁项集的挖掘只能揭示特征之间的关联性，而无法确定因果关系，即使某些特征在成功选手中频繁出现，也不能保证它们是导致盈利的原因；依赖于特定数据集生成的特征集合可能导致过拟合；每位选手的交易风格和策略可能存在显著差异，频繁项集的生成可能无法充分反映这些个体差异。</p><h1 class="md-h one" id="section3">3预测模型 <a class="md-a" href="#section0">#</a></h1><p class="md-p">要训练生成一个模型来对选手的长期稳定盈利能力排名预测，整体的思路如下：</p><p class="md-p"><strong>1、数据准备：</strong>收集和整合多个数据框，选择相关的指标进行分析；清洗数据，去掉不需要的列，并处理数据格式（去掉逗号和百分号，转换为数值类型）。<br><strong>2、变量确定：</strong>确定特征变量，即选择进行训练的指标；确定目标变量，即排名，由于数据集中并没有排名列，所以我们利用索引的大小来反映排名的先后。<br><strong>3、数据划分：</strong>将数据集分为训练集和测试集，我们对于多次参加的选手数据并没有进行均值计算，而是全部加入数据集进行训练或测试，扩大数据集以发现更多的模式。<br><strong>4、模型训练：</strong>初始化随机森林回归模型，设定树的数量，接着使用训练集进行模型训练，以学习特征与目标变量之间的关系。<br><strong>5、预测与评估：</strong>对测试集进行预测，得到预测结果。通过计算 R² （R² 值越接近 1 代表模型越准确）得分评估模型性能，判断预测效果的好坏。</p><p class="md-p">此处我们将第 6-15 届的选手数据作为数据集进行模型的训练。</p><div class="code-container"><button class="code-hide">展开</button><pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -802,7 +802,8 @@
     <span class="hljs-comment"># 初始化一个空的列表来存储所有数据框</span>
     <span class="hljs-variable">all_data</span> = []
     
-    <span class="hljs-keyword">for</span> df <span class="hljs-keyword">in</span> non_empty_dataframes:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(non_empty_dataframes) - <span class="hljs-number">1</span>):  <span class="hljs-comment"># 只循环到倒数第二项</span>
+        <span class="hljs-variable">df</span> = non_empty_dataframes[i]
         <span class="hljs-comment"># 选择需要分析的指标</span>
         <span class="hljs-variable">indicators</span> = [
             <span class="hljs-string">&#x27;组账户数&#x27;</span>,
@@ -861,11 +862,11 @@
     
     <span class="hljs-comment"># 散点图</span>
     plt.subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>)
-    sns.scatterplot(x=y_test, y=y_pred)
+    sns.scatterplot(x=y_test, y=y_pred, alpha=<span class="hljs-number">0.6</span>)
     plt.plot([y_test.<span class="hljs-built_in">min</span>(), y_test.<span class="hljs-built_in">max</span>()], [y_test.<span class="hljs-built_in">min</span>(), y_test.<span class="hljs-built_in">max</span>()], <span class="hljs-string">&#x27;r--&#x27;</span>)  <span class="hljs-comment"># 绘制y=x线</span>
     plt.xlabel(<span class="hljs-string">&#x27;实际排名&#x27;</span>)
     plt.ylabel(<span class="hljs-string">&#x27;预测排名&#x27;</span>)
-    plt.title(<span class="hljs-string">&#x27;实际排名与预测排名对比&#x27;</span>)
+    plt.title(<span class="hljs-string">&#x27;测试集实际排名与预测排名对比&#x27;</span>)
     
     <span class="hljs-comment"># 对比图</span>
     plt.subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
@@ -873,7 +874,7 @@
     sns.histplot(predictions[<span class="hljs-string">&#x27;预测排名&#x27;</span>], color=<span class="hljs-string">&#x27;orange&#x27;</span>, label=<span class="hljs-string">&#x27;预测排名&#x27;</span>, kde=<span class="hljs-literal">True</span>, stat=<span class="hljs-string">&#x27;density&#x27;</span>, bins=<span class="hljs-number">30</span>)
     plt.xlabel(<span class="hljs-string">&#x27;排名&#x27;</span>)
     plt.ylabel(<span class="hljs-string">&#x27;密度&#x27;</span>)
-    plt.title(<span class="hljs-string">&#x27;实际排名与预测排名分布&#x27;</span>)
+    plt.title(<span class="hljs-string">&#x27;测试集实际排名与预测排名分布&#x27;</span>)
     plt.legend()
     
     plt.tight_layout()
@@ -881,4 +882,47 @@
     <span class="hljs-comment"># 保存为PNG图片</span>
     plt.savefig(<span class="hljs-string">&#x27;bigData/src/forecast.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)  <span class="hljs-comment"># dpi可以调节图片清晰度</span>
     plt.close()  <span class="hljs-comment"># 关闭图形以释放内存</span>
-                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p3_1.png" class="photo"></div><p class="md-pp">图3.1 预测排名与实际排名对比图</p><p class="md-p">从左侧散点图中可以看出，大部分点都集中在红色对角线附近，表明预测结果与实际排名较为接近，但存在一些偏差。</p><p class="md-p">右侧柱状图中蓝色柱子表示实际排名的分布，橙色柱子表示预测排名的分布。从中可以看到，实际排名和预测排名的分布在大多数区间内都比较接近，但在某些区间存在差异。</p><p class="md-p">笔者此处仅针对第 6-16 届的数据进行预测模型的训练与测试，并没有利用第 18 届选手的数据对其长期稳定盈利能力进行排名预测，所做工作有限，还存在可优化改进的地方。</p></h2></div></div><div class="mainBox-title">长期稳定盈利选手特征分析</div></div><div class="modal hidden"><section class="modal-top"><button class="modal-close">&times;</button></section><div class="modal-body"></div></div><div class="modal-overby hidden"></div><div class="full"><img src="" class="hidden"></div></body></html>
+    
+    <span class="hljs-comment"># 处理 non_empty_dataframes[-1] 进行预测</span>
+    <span class="hljs-variable">new_df</span> = non_empty_dataframes[-<span class="hljs-number">1</span>]
+    
+    <span class="hljs-comment"># 处理新的数据框</span>
+    <span class="hljs-keyword">for</span> column <span class="hljs-keyword">in</span> indicators:
+        <span class="hljs-keyword">if</span> column <span class="hljs-keyword">in</span> new_df.columns:
+            new_df[column] = pd.to_numeric(new_df[column].astype(<span class="hljs-built_in">str</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>).<span class="hljs-built_in">str</span>.replace(<span class="hljs-string">&#x27;%&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>), errors=<span class="hljs-string">&#x27;coerce&#x27;</span>)
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;率&#x27;</span> <span class="hljs-keyword">in</span> column:  <span class="hljs-comment"># 假设包含&#x27;率&#x27;的列表示概率</span>
+                new_df[column] = new_df[column] / <span class="hljs-number">100</span>
+    
+    <span class="hljs-comment"># 选择特征变量</span>
+    <span class="hljs-variable">X_new</span> = new_df[indicators]
+    
+    <span class="hljs-comment"># 进行预测</span>
+    <span class="hljs-variable">new_predictions</span> = model.predict(X_new)
+    
+    <span class="hljs-comment"># 创建一个 DataFrame 来存储实际排名和预测排名</span>
+    <span class="hljs-variable">new_results</span> = pd.DataFrame({
+        <span class="hljs-string">&#x27;实际排名&#x27;</span>: new_df.index,  <span class="hljs-comment"># 或者根据具体情况选择实际排名的列</span>
+        <span class="hljs-string">&#x27;预测排名&#x27;</span>: new_predictions
+    })
+    
+    <span class="hljs-comment"># 可视化实际排名和预测排名</span>
+    plt.figure(figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">6</span>))
+    
+    <span class="hljs-comment"># 使用箱线图展示实际排名与预测排名</span>
+    plt.subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>)
+    sns.boxplot(data=new_results[[<span class="hljs-string">&#x27;实际排名&#x27;</span>, <span class="hljs-string">&#x27;预测排名&#x27;</span>]])
+    plt.ylabel(<span class="hljs-string">&#x27;排名&#x27;</span>)
+    plt.title(<span class="hljs-string">&#x27;第十六届实际排名与预测排名的箱线图&#x27;</span>)
+    
+    <span class="hljs-comment"># 使用小提琴图展示实际排名与预测排名</span>
+    plt.subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+    sns.violinplot(data=new_results[[<span class="hljs-string">&#x27;实际排名&#x27;</span>, <span class="hljs-string">&#x27;预测排名&#x27;</span>]], inner=<span class="hljs-string">&quot;quartile&quot;</span>)
+    plt.ylabel(<span class="hljs-string">&#x27;排名&#x27;</span>)
+    plt.title(<span class="hljs-string">&#x27;第十六届实际排名与预测排名的小提琴图&#x27;</span>)
+    
+    plt.tight_layout()
+    
+    <span class="hljs-comment"># 保存为PNG图片</span>
+    plt.savefig(<span class="hljs-string">&#x27;bigData/src/new_forecast.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)  <span class="hljs-comment"># dpi可以调节图片清晰度</span>
+    plt.close()  <span class="hljs-comment"># 关闭图形以释放内存</span>
+                        </code></pre></div><p class="md-p"></p><div class="md-div"><img src="./images/p3_1.png" class="photo"></div><p class="md-pp">图3.1 测试模型预测排名与实际排名对比图</p><p class="md-p">从左侧散点图中可以看出，大部分点都集中在红色对角线附近，表明预测结果与实际排名较为接近，但存在一些偏差。</p><p class="md-p">右侧柱状图中蓝色柱子表示实际排名的分布，橙色柱子表示预测排名的分布。从中可以看到，实际排名和预测排名的分布在大多数区间内都比较接近，但在某些区间存在差异，特别是排名比较靠后的选手预测效果并说不上好。</p><p class="md-p">接着我们利用训练得到的预测模型，将第 16 届选手数据的数据集作为输入，对第 16 届选手的排名进行预测，看看实际效果。</p><div class="md-div"><img src="./images/p3_2.png" class="photo"></div><p class="md-pp">图3.2 第十六届预测排名与实际排名对比图</p><p class="md-p">结合箱线图和小提琴图，我们能够看出预测排名的数据分布相对集中，表明模型在大多数情况下的预测结果较为一致，没有出现大幅度的波动。但是预测效果并不好：<br>一、预测排名的中位数低于实际排名，这可能意味着模型在某些情况下能够准确或较为保守地预测排名。<br>二、实际排名的范围较宽，而预测排名的范围较窄。这表明模型可能没有充分捕捉到所有可能的排名变化，导致预测结果在某些极端情况下与实际排名存在较大偏差。</p><p class="md-p">预测模型在大多数情况下能够提供较为一致和保守的预测结果，但是模型可能存在一定的系统性偏差，需要进一步调整和优化。</p></h2></div></div><div class="mainBox-title">长期稳定盈利选手特征分析</div></div><div class="modal hidden"><section class="modal-top"><button class="modal-close">&times;</button></section><div class="modal-body"></div></div><div class="modal-overby hidden"></div><div class="full"><img src="" class="hidden"></div></body></html>
