@@ -22,6 +22,7 @@ import '../images/p2_2_2_5.png'
 import '../images/p2_2_2_6.png'
 import '../images/p2_3_1.png'
 import '../images/p3_1.png'
+import '../images/p3_2.png'
 
 // 获取父元素
 const list_choice = document.querySelector('.mainBox-choice');
