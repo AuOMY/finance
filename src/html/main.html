@@ -582,16 +582,16 @@
                 <p class="md-p">数据分析工作主要是对各项数据进行特征分析，对比分析不同排名区间选手的差异，挖掘排名前列的长期稳定盈利选手的共性。</p>
                 <p class="md-p">但在数据分析工作开始之前，我们首先需要对数据进行预处理，因为排名靠后的选手参赛的次数过少，直接分析得出的结论更可能具有偶然性，所以我们可以对其进行限制，以提高分析的可信程度。
                 </p>
-                <h2 class="md-h two" id="section2.1">2.1数据预处理 <a class="md-a" href="#section0">#</a></h1>
-                    <p class="md-p">
-                        数据预处理的工作包括数据清洗、数据转换、特征选择等等，在此处，笔者预处理主要做的工作是数据清洗，原因在于数据存在大量空值，特征选择工作笔者将其与后续分析统一，这样更具有逻辑性。同时，笔者选择不对数据进行标准化、归一化，直接使用原始数据。
-                    </p>
-                    <p class="md-p">
-                        首先，让我们对空值进行处理。虽然爬取数据时，我们设置两类数据结构，但两类数据结构中的大多数字段都是相同的，于是我们抽取出相同且想要分析的字段进行空值检查，保留非空值。由于后续我们将进行统计分析，所以均值、最大值、最小值等相关类型的数据我们并不需要，此处舍去。
-                    </p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                <h2 class="md-h two" id="section2.1">2.1数据预处理 <a class="md-a" href="#section0">#</a></h2>
+                <p class="md-p">
+                    数据预处理的工作包括数据清洗、数据转换、特征选择等等，在此处，笔者预处理主要做的工作是数据清洗，原因在于数据存在大量空值，特征选择工作笔者将其与后续分析统一，这样更具有逻辑性。同时，笔者选择不对数据进行标准化、归一化，直接使用原始数据。
+                </p>
+                <p class="md-p">
+                    首先，让我们对空值进行处理。虽然爬取数据时，我们设置两类数据结构，但两类数据结构中的大多数字段都是相同的，于是我们抽取出相同且想要分析的字段进行空值检查，保留非空值。由于后续我们将进行统计分析，所以均值、最大值、最小值等相关类型的数据我们并不需要，此处舍去。
+                </p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 
@@ -623,17 +623,17 @@
         <span class="hljs-variable">df</span> = df[[<span class="hljs-string">&#x27;昵称&#x27;</span>] + columns_to_check]
         non_empty_dataframes.append(df)
                         </code></pre>
-                    </div>
-                    <p class="md-p">处理完空值后，我们接着对非空数据进行分组处理，这是因为组别不同，综合评分的计算也不同，并且还能够分析不同组别间可能存在的一些共性或差异。</p>
-                    <p class="md-p">注意，笔者分组采用的是 sort_values 函数，而非 groupby 函数，这是因为 groupby 函数返回值为 DataFrameGroupBy
-                        对象。这个对象并不是一个具体的 DataFrame，而是一个用于后续操作的中间对象，它包含了分组的信息。我们需要的效果是将同组别的选手信息聚合在一起，sort_value
-                        函数可以实现该效果，并且不会生成其它复杂的对象。</p>
-                    <p class="md-p">
-                        虽然实现分组，但是还存在一个问题就是，顺序不再是爬取时的排名顺序，而是乱序，这需要我们在分组时保持稳定，即不改变排名顺序。实现的逻辑十分简单，索引在某种程度上对应着排名，所以只需要让索引值小的选手排在前面即可。
-                    </p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p">处理完空值后，我们接着对非空数据进行分组处理，这是因为组别不同，综合评分的计算也不同，并且还能够分析不同组别间可能存在的一些共性或差异。</p>
+                <p class="md-p">注意，笔者分组采用的是 sort_values 函数，而非 groupby 函数，这是因为 groupby 函数返回值为 DataFrameGroupBy
+                    对象。这个对象并不是一个具体的 DataFrame，而是一个用于后续操作的中间对象，它包含了分组的信息。我们需要的效果是将同组别的选手信息聚合在一起，sort_value
+                    函数可以实现该效果，并且不会生成其它复杂的对象。</p>
+                <p class="md-p">
+                    虽然实现分组，但是还存在一个问题就是，顺序不再是爬取时的排名顺序，而是乱序，这需要我们在分组时保持稳定，即不改变排名顺序。实现的逻辑十分简单，索引在某种程度上对应着排名，所以只需要让索引值小的选手排在前面即可。
+                </p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
 
@@ -648,44 +648,44 @@
         grouped_df.set_index(<span class="hljs-string">&#x27;index&#x27;</span>, inplace=<span class="hljs-literal">True</span>)
         grouped_dataframes.append(grouped_df)
                         </code></pre>
-                    </div>
-                    <p class="md-p">在实现分组后，我们就得到了原始非空数据集、分组数据集两类数据集。由于各届数据集的数据量不尽相同，笔者选择并不简单地分析前 10 名、后 100
-                        名的选手，也不对参加次数进行限制，而是选择一个比例区间，如前 20%、后 20% 等进行分析，尽可能“模糊”数据集，分析得出长期稳定盈利选手的共性，而非某几个选手的特征。</p>
-                    <p class="md-p">
-                        其实，此处还有一个问题就是选手各届昵称匹配的问题，这是因为同一个选手在不同届可能使用的不一样的账户昵称。但是，这个问题在数据爬取时得到解决，我们在数据爬取时，先爬取链接，后爬取选手基本数据，在爬取基本数据时将链接对应的昵称添加为一个新字段，与选手基本数据同时写入
-                        csv 文件，所以实现了“用户对齐”。
-                    </p>
-                    <h2 class="md-h two" id="section2.2">2.2单项指标分析 <a class="md-a" href="#section0">#</a></h2>
-                    <p class="md-p">
-                        每一个选手在每一届都有很多单项指标，例如基本数据中的“组别、期初权益、期末权益、累计净值、累计净利润、日收益均值、最大本金收益率、盈亏比、交易胜率、风险度均值”等等，也有“最大本金收益率、毛利润、净利润、手续费”等指标的时间变化数据，还有“多空盈亏统计、日内隔夜统计、品种成交统计（累计品种平仓盈亏）”等统计数据。
-                    </p>
-                    <h3 class="md-h three" id="section2.2.1">2.2.1用户画像和分类 <a class="md-a" href="#section0">#</a></h3>
-                    <p class="md-p">首先我们对选手的基本数据进行处理，我们选择选手历年的单个特征分别进行统计分析，以了解每个指标的分布情况，获得用户画像和分类。</p>
-                    <p class="md-p">
-                        由于我们对数据集的处理，以及并没有对参赛次数进行限制，所以方差、标准差的计算会出现问题，某些选手仅参加一届比赛时，方差、标准差公式无意义，会得出空值，所以我们选择不对方差、标准差进行统计。
-                    </p>
-                    <div class="table-goto"></div>
-                    <div class="table-container" id="table-container">
-                        <table class="analysis-table"></table>
-                    </div>
-                    <p class="md-p">
-                        表格很直观地展现出各个选手的基本数据的统计情况，但是并不高效，数据量过大导致展示效果大打折扣，于是我们试着对其进行可视化。为直接、高效表示出一组数据的最大值、最小值、中位数、及上下四分位数，我们选择用箱线图对各个选手的基本数据进行可视化，点击表格中用户的名称，就能展现出对应选手的基本数据的箱线图。
-                    </p>
-                    <p class="md-p">如果你想查看某位特定选手的箱线图，可以利用下面的搜索框，输入对应选手的昵称，点击搜索，即可获得对应选手的表格数据，再点击其昵称，就能得出箱线图。</p>
-                    <div class="table-search"></div>
-                    <div class="table-container" id="analysis-container">
-                        <table class="analysis-search"></table>
-                    </div>
-                    <div id="boxplot"></div>
-                    <p class="md-p">
-                        注意，箱线图中有很多“线”，造成这样的原因有两种可能，一种是该位选手只参加了一届比赛或者每届比赛该数据都相同，没有范围，仅有单值；另一种可能就是数据数量级大小相差过大导致数量级小的数据范围显得“微弱”，所以呈一条直线，但可以通过鼠标对图像进行放大缩小解决该问题。
-                    </p>
-                    <h3 class="md-h three" id="section2.2.2">2.2.2共性特征分析 <a class="md-a" href="#section0">#</a></h3>
-                    <p class="md-p">以上我们通过表格与箱线图两种方式展现各位选手的基本数据统计情况，接着我们开始分析对选手长期稳定盈利能力影响的指标，首先由组别指标开始。我们对第 6-16 届前 20%
-                        的选手的组别进行统计，看看各组别在前列的占比，以观察组别是否有比较显著的影响。</p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p">在实现分组后，我们就得到了原始非空数据集、分组数据集两类数据集。由于各届数据集的数据量不尽相同，笔者选择并不简单地分析前 10 名、后 100
+                    名的选手，也不对参加次数进行限制，而是选择一个比例区间，如前 20%、后 20% 等进行分析，尽可能“模糊”数据集，分析得出长期稳定盈利选手的共性，而非某几个选手的特征。</p>
+                <p class="md-p">
+                    其实，此处还有一个问题就是选手各届昵称匹配的问题，这是因为同一个选手在不同届可能使用的不一样的账户昵称。但是，这个问题在数据爬取时得到解决，我们在数据爬取时，先爬取链接，后爬取选手基本数据，在爬取基本数据时将链接对应的昵称添加为一个新字段，与选手基本数据同时写入
+                    csv 文件，所以实现了“用户对齐”。
+                </p>
+                <h2 class="md-h two" id="section2.2">2.2单项指标分析 <a class="md-a" href="#section0">#</a></h2>
+                <p class="md-p">
+                    每一个选手在每一届都有很多单项指标，例如基本数据中的“组别、期初权益、期末权益、累计净值、累计净利润、日收益均值、最大本金收益率、盈亏比、交易胜率、风险度均值”等等，也有“最大本金收益率、毛利润、净利润、手续费”等指标的时间变化数据，还有“多空盈亏统计、日内隔夜统计、品种成交统计（累计品种平仓盈亏）”等统计数据。
+                </p>
+                <h3 class="md-h three" id="section2.2.1">2.2.1用户画像和分类 <a class="md-a" href="#section0">#</a></h3>
+                <p class="md-p">首先我们对选手的基本数据进行处理，我们选择选手历年的单个特征分别进行统计分析，以了解每个指标的分布情况，获得用户画像和分类。</p>
+                <p class="md-p">
+                    由于我们对数据集的处理，以及并没有对参赛次数进行限制，所以方差、标准差的计算会出现问题，某些选手仅参加一届比赛时，方差、标准差公式无意义，会得出空值，所以我们选择不对方差、标准差进行统计。
+                </p>
+                <div class="table-goto"></div>
+                <div class="table-container" id="table-container">
+                    <table class="analysis-table"></table>
+                </div>
+                <p class="md-p">
+                    表格很直观地展现出各个选手的基本数据的统计情况，但是并不高效，数据量过大导致展示效果大打折扣，于是我们试着对其进行可视化。为直接、高效表示出一组数据的最大值、最小值、中位数、及上下四分位数，我们选择用箱线图对各个选手的基本数据进行可视化，点击表格中用户的名称，就能展现出对应选手的基本数据的箱线图。
+                </p>
+                <p class="md-p">如果你想查看某位特定选手的箱线图，可以利用下面的搜索框，输入对应选手的昵称，点击搜索，即可获得对应选手的表格数据，再点击其昵称，就能得出箱线图。</p>
+                <div class="table-search"></div>
+                <div class="table-container" id="analysis-container">
+                    <table class="analysis-search"></table>
+                </div>
+                <div id="boxplot"></div>
+                <p class="md-p">
+                    注意，箱线图中有很多“线”，造成这样的原因有两种可能，一种是该位选手只参加了一届比赛或者每届比赛该数据都相同，没有范围，仅有单值；另一种可能就是数据数量级大小相差过大导致数量级小的数据范围显得“微弱”，所以呈一条直线，但可以通过鼠标对图像进行放大缩小解决该问题。
+                </p>
+                <h3 class="md-h three" id="section2.2.2">2.2.2共性特征分析 <a class="md-a" href="#section0">#</a></h3>
+                <p class="md-p">以上我们通过表格与箱线图两种方式展现各位选手的基本数据统计情况，接着我们开始分析对选手长期稳定盈利能力影响的指标，首先由组别指标开始。我们对第 6-16 届前 20%
+                    的选手的组别进行统计，看看各组别在前列的占比，以观察组别是否有比较显著的影响。</p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">from</span> groupby <span class="hljs-keyword">import</span> grouped_dataframes
@@ -726,41 +726,40 @@
         plt.savefig(<span class="hljs-string">f&#x27;bigData/src/<span class="hljs-subst">{key}</span>_group_pie.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)  <span class="hljs-comment"># 保存图表</span>
         plt.close()  <span class="hljs-comment"># 关闭当前图表以释放内存</span>
                         </code></pre>
-                    </div>
-                    <p class="md-p"></p>
-                    <div class="md-div">
-                        <img src="./images/p2_2_2_1.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.2.2.1 各届组别占比统计图</p>
-                    <p class="md-p">根据统计图我们能够看出，各届前 20%
-                        选手中轻量级组别的选手一直占据半数以上，这可能代表着轻量级组别更容易保持长期稳定盈利，因为轻量级组别的交易风格稳健，风险相对较低，选手盈利、亏损波动较为可控。早期几届选手只有轻量级、重量级两种组别，但是后期组别类别逐渐丰富，各组别都能在长期稳定盈利中脱颖而出，这也能说明组别或许是个体性差异的体现，不绝对代表着组别就能够显著影响长期稳定盈利能力。但足够稳定、可控且盈利还算可观的轻量级组别，相较于其它组别还是更为有优势。
-                    </p>
-                    <p class="md-p">在分析完组别对选手长期稳定盈利能力的影响后，接下来我们选择原始非空数据集利用前 20 % 与后 40%，的选手的基本情况进行相关性分析以找出与盈利能力高度相关的指标。
-                    </p>
-                    <p class="md-p">相关性分析我们选择 t-检验方法，它可以帮助我们识别不同指标之间的显著性差异。我们将每届前 20% 和后 40% 的选手数据作为样本进行独立性 t-检验，保存其 t
-                        统计量与 p 值，最终通过 p 值的大小判断哪些指标对选手长期盈利能力影响更为显著。</p>
-                    <p class="md-p">在分析之前，我们给出理论上能够影响选手盈利能力的指标：</p>
-                    <p class="md-p">
-                        <strong style="color: whitesmoke;">累计净值</strong>：这个指标反映了基金的总增长情况。较高的累计净值通常意味着更好的长期表现。
-                        <br>
-                        <strong style="color: whitesmoke;">累计净利润</strong>：直接关系到基金的盈利能力。高累计净利润表示基金为投资者带来了更多的收益。
-                        <br>
-                        <strong
-                            style="color: whitesmoke;">交易胜率</strong>：虽然不是直接的财务指标，但交易胜率高可能间接提高整体盈利能力，因为它表明基金经理在做决策时更为准确。
-                        <br>
-                        <strong
-                            style="color: whitesmoke;">期末权益</strong>：类似于期初权益，它显示了基金在某一时点的总价值。如果期末权益高于期初权益，并且没有大量的外部资金流入，那么这可能意味着基金在该期间内实现了正回报。
-                        <br>
-                        <strong
-                            style="color: whitesmoke;">组账户数、期初权益和累计入金</strong>：这些指标可能与规模经济有关。较大的资产管理规模有时能降低单位成本，从而提高盈利能力。
-                        <br>
-                        <strong style="color: whitesmoke;">亏损天数和亏损比率</strong>：这两个指标的数值较低通常是有利的，因为它们表明基金较少经历亏损时期。
-                        <br>
-                        <strong style="color: whitesmoke;">手续费/净利润</strong>：较低的比值是积极的，因为这表示相对于赚取的利润而言，支付的手续费较少。
-                    </p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p"></p>
+                <div class="md-div">
+                    <img src="./images/p2_2_2_1.png" class="photo">
+                </div>
+                <p class="md-pp">图2.2.2.1 各届组别占比统计图</p>
+                <p class="md-p">根据统计图我们能够看出，各届前 20%
+                    选手中轻量级组别的选手一直占据半数以上，这可能代表着轻量级组别更容易保持长期稳定盈利，因为轻量级组别的交易风格稳健，风险相对较低，选手盈利、亏损波动较为可控。早期几届选手只有轻量级、重量级两种组别，但是后期组别类别逐渐丰富，各组别都能在长期稳定盈利中脱颖而出，这也能说明组别或许是个体性差异的体现，不绝对代表着组别就能够显著影响长期稳定盈利能力。但足够稳定、可控且盈利还算可观的轻量级组别，相较于其它组别还是更为有优势。
+                </p>
+                <p class="md-p">在分析完组别对选手长期稳定盈利能力的影响后，接下来我们选择原始非空数据集利用前 20 % 与后 40%，的选手的基本情况进行相关性分析以找出与盈利能力高度相关的指标。
+                </p>
+                <p class="md-p">相关性分析我们选择 t-检验方法，它可以帮助我们识别不同指标之间的显著性差异。我们将每届前 20% 和后 40% 的选手数据作为样本进行独立性 t-检验，保存其 t
+                    统计量与 p 值，最终通过 p 值的大小判断哪些指标对选手长期盈利能力影响更为显著。</p>
+                <p class="md-p">在分析之前，我们给出理论上能够影响选手盈利能力的指标：</p>
+                <p class="md-p">
+                    <strong style="color: whitesmoke;">累计净值</strong>：这个指标反映了基金的总增长情况。较高的累计净值通常意味着更好的长期表现。
+                    <br>
+                    <strong style="color: whitesmoke;">累计净利润</strong>：直接关系到基金的盈利能力。高累计净利润表示基金为投资者带来了更多的收益。
+                    <br>
+                    <strong style="color: whitesmoke;">交易胜率</strong>：虽然不是直接的财务指标，但交易胜率高可能间接提高整体盈利能力，因为它表明基金经理在做决策时更为准确。
+                    <br>
+                    <strong
+                        style="color: whitesmoke;">期末权益</strong>：类似于期初权益，它显示了基金在某一时点的总价值。如果期末权益高于期初权益，并且没有大量的外部资金流入，那么这可能意味着基金在该期间内实现了正回报。
+                    <br>
+                    <strong
+                        style="color: whitesmoke;">组账户数、期初权益和累计入金</strong>：这些指标可能与规模经济有关。较大的资产管理规模有时能降低单位成本，从而提高盈利能力。
+                    <br>
+                    <strong style="color: whitesmoke;">亏损天数和亏损比率</strong>：这两个指标的数值较低通常是有利的，因为它们表明基金较少经历亏损时期。
+                    <br>
+                    <strong style="color: whitesmoke;">手续费/净利润</strong>：较低的比值是积极的，因为这表示相对于赚取的利润而言，支付的手续费较少。
+                </p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                                 <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -861,31 +860,31 @@
     plt.savefig(<span class="hljs-string">&#x27;D:/finance/src/images/t.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)
     plt.close()
                             </code></pre>
-                    </div>
-                    <p class="md-p"></p>
-                    <div class="md-div">
-                        <img src="./images/p2_2_2_2.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.2.2.2 T-检验结果可视化图</p>
-                    <p class="md-p">根据图中的可视化结果，我们可以通过观察各指标的 P 值来判断其与盈利能力的关联性。通常情况下，P
-                        值越小，表示该指标与盈利能力的相关性越强，于是我们能够得出以下与盈利能力相关性较强的指标：</p>
-                    <p class="md-p"><strong>累计净值：</strong>P 值较小，尤其在第 10 届和第 11 届表现显著。这表明累计净值的变化与盈利能力具有较强的相关性。</p>
-                    <p class="md-p"><strong>累计净利润：</strong>累计净利润在第 10 届和第 14 届的 P 值较小，说明累计净利润与盈利能力之间存在明显的关联。</p>
-                    <p class="md-p"><strong>盈利天数：</strong>盈利天数的第 10 届和第 15 届的 P 值较低，表明盈利天数的多少直接影响盈利能力。</p>
-                    <p class="md-p"><strong>交易胜率：</strong>交易胜率的第 10 届和第 12 届的 P 值较小，说明交易胜率的高低对盈利能力有显著影响。</p>
-                    <p class="md-p"><strong>期末权益：</strong>期末权益的第 10 届和第 11 届的 P 值较低，显示期末权益的大小与盈利能力存在一定程度的关联。</p>
-                    <p class="md-p">
-                        上述指标在第 6 届到第 16
-                        届中的某些届别表现出较低的 P 值，意味着它们在这些特定时期内对盈利能力具有较强的影响力。然而，需要注意的是，P
-                        值仅反映了统计显著性，并不能完全解释因果关系。在实际应用中，还需考虑其他因素综合评估盈利能力。
-                    </p>
-                    <p class="md-p">在对基本数据统计、分析完成后，我们接着对图表数据进行处理，由于图表数据是选手某一属性随时间变化的数据，数据量过大，无法实时渲染至系统中，所以我们利用 PYTHON
-                        语言对选中选手的图表数据进行可视化，生成静态图像。</p>
-                    <p class="md-p">与基本数据不同的是，由于图表数据的数量级过大，以及图表数据对应 14-16 届参加选手的数量过多，我们选择对前 10 名
-                        的选手进行数据可视化，查看他们随时间变化指标的整体情况，从而分析出他们盈利的原因。</p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p"></p>
+                <div class="md-div">
+                    <img src="./images/p2_2_2_2.png" class="photo">
+                </div>
+                <p class="md-pp">图2.2.2.2 T-检验结果可视化图</p>
+                <p class="md-p">根据图中的可视化结果，我们可以通过观察各指标的 P 值来判断其与盈利能力的关联性。通常情况下，P
+                    值越小，表示该指标与盈利能力的相关性越强，于是我们能够得出以下与盈利能力相关性较强的指标：</p>
+                <p class="md-p"><strong>累计净值：</strong>P 值较小，尤其在第 10 届和第 11 届表现显著。这表明累计净值的变化与盈利能力具有较强的相关性。</p>
+                <p class="md-p"><strong>累计净利润：</strong>累计净利润在第 10 届和第 14 届的 P 值较小，说明累计净利润与盈利能力之间存在明显的关联。</p>
+                <p class="md-p"><strong>盈利天数：</strong>盈利天数的第 10 届和第 15 届的 P 值较低，表明盈利天数的多少直接影响盈利能力。</p>
+                <p class="md-p"><strong>交易胜率：</strong>交易胜率的第 10 届和第 12 届的 P 值较小，说明交易胜率的高低对盈利能力有显著影响。</p>
+                <p class="md-p"><strong>期末权益：</strong>期末权益的第 10 届和第 11 届的 P 值较低，显示期末权益的大小与盈利能力存在一定程度的关联。</p>
+                <p class="md-p">
+                    上述指标在第 6 届到第 16
+                    届中的某些届别表现出较低的 P 值，意味着它们在这些特定时期内对盈利能力具有较强的影响力。然而，需要注意的是，P
+                    值仅反映了统计显著性，并不能完全解释因果关系。在实际应用中，还需考虑其他因素综合评估盈利能力。
+                </p>
+                <p class="md-p">在对基本数据统计、分析完成后，我们接着对图表数据进行处理，由于图表数据是选手某一属性随时间变化的数据，数据量过大，无法实时渲染至系统中，所以我们利用 PYTHON
+                    语言对选中选手的图表数据进行可视化，生成静态图像。</p>
+                <p class="md-p">与基本数据不同的是，由于图表数据的数量级过大，以及图表数据对应 14-16 届参加选手的数量过多，我们选择对前 10 名
+                    的选手进行数据可视化，查看他们随时间变化指标的整体情况，从而分析出他们盈利的原因。</p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -952,70 +951,70 @@
             plt.savefig(<span class="hljs-string">f&#x27;bigData/src/graph_<span class="hljs-subst">{i}</span>_<span class="hljs-subst">{nickname}</span>.png&#x27;</span>)
             plt.close()  <span class="hljs-comment"># 关闭当前图形以释放内存</span>
                         </code></pre>
-                    </div>
-                    <p class="md-p"></p>
-                    <div class="md-div">
-                        <img src="./images/p2_2_2_3.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.2.2.3 第14届前10名选手时间变化图</p>
-                    <p class="md-p">通过对第 14 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p>
-                    <p class="md-p"><strong>净值增长稳定且显著：</strong>所有排名靠前的选手（如“冠军之鼎”、“逆天而行”）的净值曲线呈现长期稳定上升趋势，无剧烈回撤。</p>
-                    <p class="md-p">
-                        <strong>高毛利润与低手续费占比：</strong>毛利润曲线普遍位于高位（如“理性稳健”毛利润达 250,000
-                        以上），而手续费占比相对较低（如“完美博哥”中手续费与毛利润的比值较小）。
-                    </p>
-                    <p class="md-p"><strong>净利润与税率优化：</strong>净利润曲线与毛利润保持同步增长（如“彩虹14”净利润达
-                        2.5），且税率控制得当（如“福海”税率未显著压缩净利润）。
-                    </p>
-                    <p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>部分选手（如“逆天而行”）的 ROI 曲线陡峭，短期内实现本金翻倍（如从 0 升至 500,000）。
-                    </p>
-                    <div class="md-div">
-                        <img src="./images/p2_2_2_4.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.2.2.4 第15届前10名选手时间变化图</p>
-                    <p class="md-p">通过对第 15 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p>
-                    <p class="md-p">
-                        <strong>净值曲线的稳定性与增长性：</strong>顶级选手（如“逆天而行”）的净值曲线呈现平滑上升趋势（从 0.0 升至
-                        1.2），无剧烈波动或回撤。部分选手（如“jyfyl”）虽净值波动较大（峰值 5.0），但整体趋势向上。
-                    </p>
-                    <p class="md-p">
-                        <strong>高净利润与成本控制：</strong>“炒期货最重要的是开心”净利润与毛利润的比值较高（图表显示净利润接近 1.0）。“光期555”手续费占比极低（净值 6-8
-                        时手续费几乎无影响）。
-                    </p>
-                    <p class="md-p">
-                        <strong>最大本金收益率（ROI）突出：</strong>“jyfyl”的 ROI 峰值显著（虽波动大，但短期收益极高）。“逆天而行” ROI 稳定增长（0.0 → 1.2）。
-                    </p>
-                    <p class="md-p">
-                        <strong>风险控制能力（回撤小）：</strong>“灵性投资-觉念行者”净值曲线虽为负值（-3.0 至
-                        -0.5），但后期逐步修复，显示抗风险能力。“彩虹14”无剧烈下跌（图表未显示具体数值，但曲线平滑）。
-                    </p>
-                    <div class="md-div">
-                        <img src="./images/p2_2_2_5.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.2.2.5 第16届前10名选手时间变化图</p>
-                    <p class="md-p">通过对第 16 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p>
-                    <p class="md-p"><strong>净值曲线的稳定增长：</strong>“彩虹14”和“jyfyl”的净值曲线呈现持续上升趋势（“彩虹14” 净值从 0.0 升至 3.5，“jyfyl”
-                        从
-                        0.0 升至 3.0），且波动较小。理性稳健的净值高达 40,000，显示长期积累的稳定收益。</p>
-                    <p class="md-p">
-                        <strong>高净利润与成本控制：</strong>“jyfyl”和“彩虹14”的净利润与毛利润比值较高，手续费占比低。“严守套利对冲”的净利润曲线平滑，显示高效的成本管理。
-                    </p>
-                    <p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>“逆天而行”的 ROI 稳步增长（0.0 → 0.8），“彩虹14”的 ROI 峰值显著（3.5）。
-                    </p>
-                    <p class="md-p">
-                        <strong>风险控制（低回撤）：</strong>“冠军之鼎”净值虽短暂为负（-0.5），但迅速修复，显示抗风险能力。“理性稳健”的净值无回撤，体现严格止损或分散投资。
-                    </p>
-                    <p class="md-p"><strong>长期适应性：</strong>“炒期货最重要的是开心”的净值在多年跨度（2015-2023）中保持增长。</p>
-                    <p class="md-p"><strong>利润率与税率优化：</strong>“福海”和“灵性投资”的税率曲线平缓，未显著挤压净利润。</p>
-                    <p class="md-p">综合上述三届图表数据的分析，我们能够归纳得出盈利能力强的共同模式：稳定净值增长（低回撤） + 高净利润率（低成本） + 高 ROI（收益能力） +
-                        严格风控。其中，净值曲线的稳定性和成本控制能力是三届最一致的共性，而短期爆发力（如高
-                        ROI）和长期复利则是差异化补充。简单来讲，就是选手的净值稳定增长、利润率高以及本金收益率高则代表盈利能力强。</p>
-                    <p class="md-p">以上，我们通过对基本数据的分析以及图表数据的分析，得出几个与盈利能力强的指标：如累计净值、累计净利润，我们接下来使用 DBSCAN
-                        方法对选手进行聚类，识别出不同特征组合的选手群体，以验证我们的结论是否正确。此处，我们选择对前 20% 和后 40% 的选手进行聚类分析。
-                    </p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p"></p>
+                <div class="md-div">
+                    <img src="./images/p2_2_2_3.png" class="photo">
+                </div>
+                <p class="md-pp">图2.2.2.3 第14届前10名选手时间变化图</p>
+                <p class="md-p">通过对第 14 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p>
+                <p class="md-p"><strong>净值增长稳定且显著：</strong>所有排名靠前的选手（如“冠军之鼎”、“逆天而行”）的净值曲线呈现长期稳定上升趋势，无剧烈回撤。</p>
+                <p class="md-p">
+                    <strong>高毛利润与低手续费占比：</strong>毛利润曲线普遍位于高位（如“理性稳健”毛利润达 250,000
+                    以上），而手续费占比相对较低（如“完美博哥”中手续费与毛利润的比值较小）。
+                </p>
+                <p class="md-p"><strong>净利润与税率优化：</strong>净利润曲线与毛利润保持同步增长（如“彩虹14”净利润达
+                    2.5），且税率控制得当（如“福海”税率未显著压缩净利润）。
+                </p>
+                <p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>部分选手（如“逆天而行”）的 ROI 曲线陡峭，短期内实现本金翻倍（如从 0 升至 500,000）。
+                </p>
+                <div class="md-div">
+                    <img src="./images/p2_2_2_4.png" class="photo">
+                </div>
+                <p class="md-pp">图2.2.2.4 第15届前10名选手时间变化图</p>
+                <p class="md-p">通过对第 15 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p>
+                <p class="md-p">
+                    <strong>净值曲线的稳定性与增长性：</strong>顶级选手（如“逆天而行”）的净值曲线呈现平滑上升趋势（从 0.0 升至
+                    1.2），无剧烈波动或回撤。部分选手（如“jyfyl”）虽净值波动较大（峰值 5.0），但整体趋势向上。
+                </p>
+                <p class="md-p">
+                    <strong>高净利润与成本控制：</strong>“炒期货最重要的是开心”净利润与毛利润的比值较高（图表显示净利润接近 1.0）。“光期555”手续费占比极低（净值 6-8
+                    时手续费几乎无影响）。
+                </p>
+                <p class="md-p">
+                    <strong>最大本金收益率（ROI）突出：</strong>“jyfyl”的 ROI 峰值显著（虽波动大，但短期收益极高）。“逆天而行” ROI 稳定增长（0.0 → 1.2）。
+                </p>
+                <p class="md-p">
+                    <strong>风险控制能力（回撤小）：</strong>“灵性投资-觉念行者”净值曲线虽为负值（-3.0 至
+                    -0.5），但后期逐步修复，显示抗风险能力。“彩虹14”无剧烈下跌（图表未显示具体数值，但曲线平滑）。
+                </p>
+                <div class="md-div">
+                    <img src="./images/p2_2_2_5.png" class="photo">
+                </div>
+                <p class="md-pp">图2.2.2.5 第16届前10名选手时间变化图</p>
+                <p class="md-p">通过对第 16 届前 10 名选手的折线图分析，可以总结出以下盈利能力强的关键指标和共同特征：</p>
+                <p class="md-p"><strong>净值曲线的稳定增长：</strong>“彩虹14”和“jyfyl”的净值曲线呈现持续上升趋势（“彩虹14” 净值从 0.0 升至 3.5，“jyfyl”
+                    从
+                    0.0 升至 3.0），且波动较小。理性稳健的净值高达 40,000，显示长期积累的稳定收益。</p>
+                <p class="md-p">
+                    <strong>高净利润与成本控制：</strong>“jyfyl”和“彩虹14”的净利润与毛利润比值较高，手续费占比低。“严守套利对冲”的净利润曲线平滑，显示高效的成本管理。
+                </p>
+                <p class="md-p"><strong>最大本金收益率（ROI）突出：</strong>“逆天而行”的 ROI 稳步增长（0.0 → 0.8），“彩虹14”的 ROI 峰值显著（3.5）。
+                </p>
+                <p class="md-p">
+                    <strong>风险控制（低回撤）：</strong>“冠军之鼎”净值虽短暂为负（-0.5），但迅速修复，显示抗风险能力。“理性稳健”的净值无回撤，体现严格止损或分散投资。
+                </p>
+                <p class="md-p"><strong>长期适应性：</strong>“炒期货最重要的是开心”的净值在多年跨度（2015-2023）中保持增长。</p>
+                <p class="md-p"><strong>利润率与税率优化：</strong>“福海”和“灵性投资”的税率曲线平缓，未显著挤压净利润。</p>
+                <p class="md-p">综合上述三届图表数据的分析，我们能够归纳得出盈利能力强的共同模式：稳定净值增长（低回撤） + 高净利润率（低成本） + 高 ROI（收益能力） +
+                    严格风控。其中，净值曲线的稳定性和成本控制能力是三届最一致的共性，而短期爆发力（如高
+                    ROI）和长期复利则是差异化补充。简单来讲，就是选手的净值稳定增长、利润率高以及本金收益率高则代表盈利能力强。</p>
+                <p class="md-p">以上，我们通过对基本数据的分析以及图表数据的分析，得出几个与盈利能力强的指标：如累计净值、累计净利润，我们接下来使用 DBSCAN
+                    方法对选手进行聚类，识别出不同特征组合的选手群体，以验证我们的结论是否正确。此处，我们选择对前 20% 和后 40% 的选手进行聚类分析。
+                </p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -1081,27 +1080,27 @@
     
         <span class="hljs-variable">i</span> += <span class="hljs-number">1</span>
                         </code></pre>
-                    </div>
-                    <p class="md-p"></p>
-                    <div class="md-div">
-                        <img src="./images/p2_2_2_6.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.2.2.6 第6-16届DBSCAN可视化图</p>
-                    <p class="md-p">根据 DBSCAN 聚类结果，我们能够得出净值与净利润确实是影响选手盈利能力的重要指标，前 20% 的选手与后 40%
-                        的选手相比，同样净值的情况下，净利润通常更高；而净利润相同时，净值又通常更高。但是也存在小部分情况，前 20% 的个别选手的净值与净利润比后 40%
-                        的一些选手低，但影响选手盈利能力的不仅仅是这两个指标，也存在其它的因素，这里我们仅仅给出最相关的某几个指标。</p>
-                    <h2 class="md-h two" id="section2.3">2.3综合多项指标分析 <a class="md-a" href="#section0">#</a></h2>
-                    <p class="md-p">
-                        在单项指标分析中，我们得出与选手盈利能力较相关的指标有累计净利润、累计净值以及本金收益率，但我们仅针对单项指标进行分析，通过聚类结果验证我们的结论存在一定的合理性。接下来，我们将分析综合多个指标的情况下，选手的盈利能力与指标集的关系。
-                    </p>
-                    <p class="md-p">
-                        直观地来讲，将影响选手盈利能力大的单项指标简单组合，应该也是对选手的盈利能力有较大影响的，但我们希望能够找出更广泛的指标集合。</p>
-                    <p class="md-p">
-                        在机器学习中，存在关联规则的概念，即某一元素与另一元素存在较强的关联性时，它们同时存在的概率大，还存在另一概念为频繁项集，挖掘关联规则需要利用频繁项集，而频繁项集代表着元素集合出现的次数超过某一阈值，那我们就能利用盈利能力前列的选手集，从单项指标出发，生成“频繁项集”，即频繁出现的多项指标集合，在其中我们进一步筛选出第
-                        6-16 届出现总次数较多的频繁项集作为最可能影响选手盈利能力的指标集。</p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p"></p>
+                <div class="md-div">
+                    <img src="./images/p2_2_2_6.png" class="photo">
+                </div>
+                <p class="md-pp">图2.2.2.6 第6-16届DBSCAN可视化图</p>
+                <p class="md-p">根据 DBSCAN 聚类结果，我们能够得出净值与净利润确实是影响选手盈利能力的重要指标，前 20% 的选手与后 40%
+                    的选手相比，同样净值的情况下，净利润通常更高；而净利润相同时，净值又通常更高。但是也存在小部分情况，前 20% 的个别选手的净值与净利润比后 40%
+                    的一些选手低，但影响选手盈利能力的不仅仅是这两个指标，也存在其它的因素，这里我们仅仅给出最相关的某几个指标。</p>
+                <h2 class="md-h two" id="section2.3">2.3综合多项指标分析 <a class="md-a" href="#section0">#</a></h2>
+                <p class="md-p">
+                    在单项指标分析中，我们得出与选手盈利能力较相关的指标有累计净利润、累计净值以及本金收益率，但我们仅针对单项指标进行分析，通过聚类结果验证我们的结论存在一定的合理性。接下来，我们将分析综合多个指标的情况下，选手的盈利能力与指标集的关系。
+                </p>
+                <p class="md-p">
+                    直观地来讲，将影响选手盈利能力大的单项指标简单组合，应该也是对选手的盈利能力有较大影响的，但我们希望能够找出更广泛的指标集合。</p>
+                <p class="md-p">
+                    在机器学习中，存在关联规则的概念，即某一元素与另一元素存在较强的关联性时，它们同时存在的概率大，还存在另一概念为频繁项集，挖掘关联规则需要利用频繁项集，而频繁项集代表着元素集合出现的次数超过某一阈值，那我们就能利用盈利能力前列的选手集，从单项指标出发，生成“频繁项集”，即频繁出现的多项指标集合，在其中我们进一步筛选出第
+                    6-16 届出现总次数较多的频繁项集作为最可能影响选手盈利能力的指标集。</p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -1212,59 +1211,59 @@
     plt.savefig(<span class="hljs-string">&#x27;bigData/src/Apriori.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)
     plt.close()
                         </code></pre>
-                    </div>
-                    <p class="md-p"></p>
-                    <div class="md-div">
-                        <img src="./images/p2_3_1.png" class="photo">
-                    </div>
-                    <p class="md-pp">图2.3.1 第6-16届频繁项集统计图</p>
-                    <p class="md-p">要确定哪些频繁项集可以作为稳定盈利选手在多个指标上的共性指标，我们需要关注那些出现频率较高的项集。根据统计图，我们尝试给出下面 10
-                        个指标集作为长期稳定盈利选手的共性指标：</p>
-                    <p class="md-p">
-                        <strong>{ 累计净值, 累计出金 }：</strong>这个项集出现的次数较多，表明它在多个稳定盈利选手中具有共性。
-                        <br>
-                        <strong>{ 累计净值, 盈利天数 }：</strong>同样地，这个项集也具有较高的出现频率，可能是稳定盈利的一个标志。
-                        <br>
-                        <strong>{ 累计净值, 组账户数 }：</strong>组账户数的多少可能与资金管理策略有关，这个项集的出现频率较高，也可能是一个重要的共性指标。
-                        <br>
-                        <strong>{ 期末权益, 累计净利润 }：</strong>期末权益和累计净利润都是衡量投资表现的重要指标，这个项集的高频出现可能反映了稳定盈利的特点。
-                        <br>
-                        <strong>{ 累计净值, 手续费/净利润 }：</strong>手续费与净利润的比例可以反映交易成本的控制能力，这个项集的出现频率较高，也可能是稳定盈利的一个共性特征。
-                        <br>
-                        <strong>{ 累计净值, 盈亏比 }：</strong>盈亏比是评估交易系统性能的一个重要指标，这个项集的高频出现可能意味着稳定盈利选手在风险控制和收益获取上具有一定的共性。
-                        <br>
-                        <strong>{ 累计净值, 交易胜率 }：</strong>交易胜率直接关系到交易的成败，这个项集的出现频率较高，可能也是稳定盈利的一个关键因素。
-                        <br>
-                        <strong>{ 累计净值, 累计出金, 盈利天数 }：</strong>这个三项组合的项集出现频率较高，综合了累计净值、累计出金和盈利天数三个重要指标，可能是稳定盈利选手的一个显著共性。
-                        <br>
-                        <strong>{ 累计净值, 累计出金, 组账户数 }：</strong>这个三项组合的项集也具有较高的出现频率，涉及到了资金管理和投资表现的多个方面，可能也是一个重要的共性指标。
-                        <br>
-                        <strong>{ 累计净值, 盈利天数, 交易胜率
-                            }：</strong>这个三项组合的项集出现频率较高，涵盖了盈利天数和交易胜率这两个直接影响盈利能力的指标，以及累计净值这一总体表现指标，可能也是稳定盈利选手的一个共性特征。
-                    </p>
-                    <p class="md-p">需要注意的是，虽然这些项集的出现频率较高，但并不能保证它们就是稳定盈利的唯一或绝对共性指标。我们仅仅针对第 6-16 届前 20%
-                        的选手集进行频繁项集的生成，尽可能地挖掘出各位长期稳定盈利选手的常出现的特征集合，将这些特征集合作为共性指标存在一定的合理性，频繁项集的生成能够帮助识别在成功选手中常见的特征，这些特征可能与他们的盈利能力相关。因此，利用这些特征作为共性指标，有助于理解成功的潜在因素。
-                    </p>
-                    <p class="md-p">同时，也存在一定的局限性：仅分析前 20%
-                        的选手可能导致样本偏差，忽略了其他可能成功的选手特征；频繁项集的挖掘只能揭示特征之间的关联性，而无法确定因果关系，即使某些特征在成功选手中频繁出现，也不能保证它们是导致盈利的原因；依赖于特定数据集生成的特征集合可能导致过拟合；每位选手的交易风格和策略可能存在显著差异，频繁项集的生成可能无法充分反映这些个体差异。
-                    </p>
-                    <h1 class="md-h one" id="section3">3预测模型 <a class="md-a" href="#section0">#</a></h1>
-                    <p class="md-p">要训练生成一个模型来对选手的长期稳定盈利能力排名预测，整体的思路如下：</p>
-                    <p class="md-p">
-                        <strong>1、数据准备：</strong>收集和整合多个数据框，选择相关的指标进行分析；清洗数据，去掉不需要的列，并处理数据格式（去掉逗号和百分号，转换为数值类型）。
-                        <br>
-                        <strong>2、变量确定：</strong>确定特征变量，即选择进行训练的指标；确定目标变量，即排名，由于数据集中并没有排名列，所以我们利用索引的大小来反映排名的先后。
-                        <br>
-                        <strong>3、数据划分：</strong>将数据集分为训练集和测试集，我们对于多次参加的选手数据并没有进行均值计算，而是全部加入数据集进行训练或测试，扩大数据集以发现更多的模式。
-                        <br>
-                        <strong>4、模型训练：</strong>初始化随机森林回归模型，设定树的数量，接着使用训练集进行模型训练，以学习特征与目标变量之间的关系。
-                        <br>
-                        <strong>5、预测与评估：</strong>对测试集进行预测，得到预测结果。通过计算 R² （R² 值越接近 1 代表模型越准确）得分评估模型性能，判断预测效果的好坏。
-                    </p>
-                    <p class="md-p">此处我们将第 6-15 届的选手数据作为数据集进行模型的训练。</p>
-                    <div class="code-container">
-                        <button class="code-hide">展开</button>
-                        <pre class="code-block"><code>
+                </div>
+                <p class="md-p"></p>
+                <div class="md-div">
+                    <img src="./images/p2_3_1.png" class="photo">
+                </div>
+                <p class="md-pp">图2.3.1 第6-16届频繁项集统计图</p>
+                <p class="md-p">要确定哪些频繁项集可以作为稳定盈利选手在多个指标上的共性指标，我们需要关注那些出现频率较高的项集。根据统计图，我们尝试给出下面 10
+                    个指标集作为长期稳定盈利选手的共性指标：</p>
+                <p class="md-p">
+                    <strong>{ 累计净值, 累计出金 }：</strong>这个项集出现的次数较多，表明它在多个稳定盈利选手中具有共性。
+                    <br>
+                    <strong>{ 累计净值, 盈利天数 }：</strong>同样地，这个项集也具有较高的出现频率，可能是稳定盈利的一个标志。
+                    <br>
+                    <strong>{ 累计净值, 组账户数 }：</strong>组账户数的多少可能与资金管理策略有关，这个项集的出现频率较高，也可能是一个重要的共性指标。
+                    <br>
+                    <strong>{ 期末权益, 累计净利润 }：</strong>期末权益和累计净利润都是衡量投资表现的重要指标，这个项集的高频出现可能反映了稳定盈利的特点。
+                    <br>
+                    <strong>{ 累计净值, 手续费/净利润 }：</strong>手续费与净利润的比例可以反映交易成本的控制能力，这个项集的出现频率较高，也可能是稳定盈利的一个共性特征。
+                    <br>
+                    <strong>{ 累计净值, 盈亏比 }：</strong>盈亏比是评估交易系统性能的一个重要指标，这个项集的高频出现可能意味着稳定盈利选手在风险控制和收益获取上具有一定的共性。
+                    <br>
+                    <strong>{ 累计净值, 交易胜率 }：</strong>交易胜率直接关系到交易的成败，这个项集的出现频率较高，可能也是稳定盈利的一个关键因素。
+                    <br>
+                    <strong>{ 累计净值, 累计出金, 盈利天数 }：</strong>这个三项组合的项集出现频率较高，综合了累计净值、累计出金和盈利天数三个重要指标，可能是稳定盈利选手的一个显著共性。
+                    <br>
+                    <strong>{ 累计净值, 累计出金, 组账户数 }：</strong>这个三项组合的项集也具有较高的出现频率，涉及到了资金管理和投资表现的多个方面，可能也是一个重要的共性指标。
+                    <br>
+                    <strong>{ 累计净值, 盈利天数, 交易胜率
+                        }：</strong>这个三项组合的项集出现频率较高，涵盖了盈利天数和交易胜率这两个直接影响盈利能力的指标，以及累计净值这一总体表现指标，可能也是稳定盈利选手的一个共性特征。
+                </p>
+                <p class="md-p">需要注意的是，虽然这些项集的出现频率较高，但并不能保证它们就是稳定盈利的唯一或绝对共性指标。我们仅仅针对第 6-16 届前 20%
+                    的选手集进行频繁项集的生成，尽可能地挖掘出各位长期稳定盈利选手的常出现的特征集合，将这些特征集合作为共性指标存在一定的合理性，频繁项集的生成能够帮助识别在成功选手中常见的特征，这些特征可能与他们的盈利能力相关。因此，利用这些特征作为共性指标，有助于理解成功的潜在因素。
+                </p>
+                <p class="md-p">同时，也存在一定的局限性：仅分析前 20%
+                    的选手可能导致样本偏差，忽略了其他可能成功的选手特征；频繁项集的挖掘只能揭示特征之间的关联性，而无法确定因果关系，即使某些特征在成功选手中频繁出现，也不能保证它们是导致盈利的原因；依赖于特定数据集生成的特征集合可能导致过拟合；每位选手的交易风格和策略可能存在显著差异，频繁项集的生成可能无法充分反映这些个体差异。
+                </p>
+                <h1 class="md-h one" id="section3">3预测模型 <a class="md-a" href="#section0">#</a></h1>
+                <p class="md-p">要训练生成一个模型来对选手的长期稳定盈利能力排名预测，整体的思路如下：</p>
+                <p class="md-p">
+                    <strong>1、数据准备：</strong>收集和整合多个数据框，选择相关的指标进行分析；清洗数据，去掉不需要的列，并处理数据格式（去掉逗号和百分号，转换为数值类型）。
+                    <br>
+                    <strong>2、变量确定：</strong>确定特征变量，即选择进行训练的指标；确定目标变量，即排名，由于数据集中并没有排名列，所以我们利用索引的大小来反映排名的先后。
+                    <br>
+                    <strong>3、数据划分：</strong>将数据集分为训练集和测试集，我们对于多次参加的选手数据并没有进行均值计算，而是全部加入数据集进行训练或测试，扩大数据集以发现更多的模式。
+                    <br>
+                    <strong>4、模型训练：</strong>初始化随机森林回归模型，设定树的数量，接着使用训练集进行模型训练，以学习特征与目标变量之间的关系。
+                    <br>
+                    <strong>5、预测与评估：</strong>对测试集进行预测，得到预测结果。通过计算 R² （R² 值越接近 1 代表模型越准确）得分评估模型性能，判断预测效果的好坏。
+                </p>
+                <p class="md-p">此处我们将第 6-15 届的选手数据作为数据集进行模型的训练。</p>
+                <div class="code-container">
+                    <button class="code-hide">展开</button>
+                    <pre class="code-block"><code>
                             <div class="language-label hidden">PYTHON</div>
     <span class="hljs-keyword">from</span> non_empty <span class="hljs-keyword">import</span> non_empty_dataframes
     <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -1406,28 +1405,28 @@
     plt.savefig(<span class="hljs-string">&#x27;bigData/src/new_forecast.png&#x27;</span>, dpi=<span class="hljs-number">300</span>)  <span class="hljs-comment"># dpi可以调节图片清晰度</span>
     plt.close()  <span class="hljs-comment"># 关闭图形以释放内存</span>
                         </code></pre>
-                    </div>
-                    <p class="md-p"></p>
-                    <div class="md-div">
-                        <img src="./images/p3_1.png" class="photo">
-                    </div>
-                    <p class="md-pp">图3.1 测试模型预测排名与实际排名对比图</p>
-                    <p class="md-p">从左侧散点图中可以看出，大部分点都集中在红色对角线附近，表明预测结果与实际排名较为接近，但存在一些偏差。</p>
-                    <p class="md-p">
-                        右侧柱状图中蓝色柱子表示实际排名的分布，橙色柱子表示预测排名的分布。从中可以看到，实际排名和预测排名的分布在大多数区间内都比较接近，但在某些区间存在差异，特别是排名比较靠后的选手预测效果并说不上好。
-                    </p>
-                    <p class="md-p">接着我们利用训练得到的预测模型，将第 16 届选手数据的数据集作为输入，对第 16 届选手的排名进行预测，看看实际效果。</p>
-                    <div class="md-div">
-                        <img src="./images/p3_2.png" class="photo">
-                    </div>
-                    <p class="md-pp">图3.2 第十六届预测排名与实际排名对比图</p>
-                    <p class="md-p">结合箱线图和小提琴图，我们能够看出预测排名的数据分布相对集中，表明模型在大多数情况下的预测结果较为一致，没有出现大幅度的波动。但是预测效果并不好：
-                        <br>
-                        一、预测排名的中位数低于实际排名，这可能意味着模型在某些情况下能够准确或较为保守地预测排名。
-                        <br>
-                        二、实际排名的范围较宽，而预测排名的范围较窄。这表明模型可能没有充分捕捉到所有可能的排名变化，导致预测结果在某些极端情况下与实际排名存在较大偏差。
-                    </p>
-                    <p class="md-p">预测模型在大多数情况下能够提供较为一致和保守的预测结果，但是模型可能存在一定的系统性偏差，需要进一步调整和优化。</p>
+                </div>
+                <p class="md-p"></p>
+                <div class="md-div">
+                    <img src="./images/p3_1.png" class="photo">
+                </div>
+                <p class="md-pp">图3.1 测试模型预测排名与实际排名对比图</p>
+                <p class="md-p">从左侧散点图中可以看出，大部分点都集中在红色对角线附近，表明预测结果与实际排名较为接近，但存在一些偏差。</p>
+                <p class="md-p">
+                    右侧柱状图中蓝色柱子表示实际排名的分布，橙色柱子表示预测排名的分布。从中可以看到，实际排名和预测排名的分布在大多数区间内都比较接近，但在某些区间存在差异，特别是排名比较靠后的选手预测效果并说不上好。
+                </p>
+                <p class="md-p">接着我们利用训练得到的预测模型，将第 16 届选手数据的数据集作为输入，对第 16 届选手的排名进行预测，看看实际效果。</p>
+                <div class="md-div">
+                    <img src="./images/p3_2.png" class="photo">
+                </div>
+                <p class="md-pp">图3.2 第十六届预测排名与实际排名对比图</p>
+                <p class="md-p">结合箱线图和小提琴图，我们能够看出预测排名的数据分布相对集中，表明模型在大多数情况下的预测结果较为一致，没有出现大幅度的波动。但是预测效果并不好：
+                    <br>
+                    一、预测排名的中位数低于实际排名，这可能意味着模型在某些情况下能够准确或较为保守地预测排名。
+                    <br>
+                    二、实际排名的范围较宽，而预测排名的范围较窄。这表明模型可能没有充分捕捉到所有可能的排名变化，导致预测结果在某些极端情况下与实际排名存在较大偏差。
+                </p>
+                <p class="md-p">预测模型在大多数情况下能够提供较为一致和保守的预测结果，但是模型可能存在一定的系统性偏差，需要进一步调整和优化。</p>
             </div>
         </div>
         <div class="mainBox-title">长期稳定盈利选手特征分析</div>
